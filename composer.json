@@ -1,0 +1,28 @@
+{
+  "name": "iamwildtuna/boxberry-sdk",
+  "description": "SDK для работы с API BoxBerry (api.boxberry.de)",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/iamwildtuna/boxberry-sdk/issues",
+    "source": "https://github.com/iamwildtuna/boxberry-sdk"
+  },
+  "authors": [
+    {
+      "name": "Nikolay Lapay",
+      "email": "nl@wildtuna.pro",
+      "homepage": "http://wildtuna.pro",
+      "role": "Creator"
+    }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "WildTuna\\BoxberrySdk\\": "src/"
+    }
+  }
+}
