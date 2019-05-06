@@ -986,14 +986,9 @@ try {
     $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
     $bbClient->setCurrentToken('main');
     
-    $tracknums = $bbClient->getOrdersNotAct(); // Строкой
-    /*
-     array(
-         'ImIds'=>'XXXXXX,XXXXXX,XXXXXX'
-     );
-     */
-    $tracknums = $bbClient->getOrdersNotAct(true); // массивом
+    $tracknums = $bbClient->getOrdersNotAct(); // строкой $tracknums = 'XXXXXX,XXXXXX,XXXXXX';
     
+    $tracknums = $bbClient->getOrdersNotAct(true); // массивом
     /*
      array(
          'XXXXXX',
