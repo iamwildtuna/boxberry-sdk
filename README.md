@@ -10,11 +10,14 @@
 [Список ПВЗ](#getPvzList)  
 [Расчет тарифа](#calcTariff)  
 [Полная информация о ПВЗ](#pointDetails)  
+[Информация о заказе](#getOrderInfo)  
 [Список городов](#getCityList)  
 [Почтовые индексы с КД](#getZipList)  
 [Проверка почтового индекса](#checkZip)  
 [Список городов с КД](#getCourierCities)  
 [Список точек приема посылок](#getPointsForParcels)  
+[Список созданных заказов](#getOrderList)   
+[Список доставляющихся заказов](#getOrdersInProgress)   
   
 
 <a name="links"><h1>Changelog</h1></a>
@@ -522,6 +525,40 @@ catch (\Exception $e) {
 }
 ```
 
+<a name="getOrderInfo"><h1>Информация о заказе</h1></a>  
+Позволяет получить ссылку на файл печати этикеток, список штрих-кодов коробок в посылке через запятую (,), 
+список штрих-кодов выгруженных коробок в посылке через запятую (,) . Обязательно наличие параметра (код отслеживания заказа).    
+**Внимание!** сервис работает только с посылками созданными в api.boxberry.de.
+
+**Входные параметры:**  
+ - *order_id (string)* - трек-номер / номер ИМ
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getOrderInfo('DUD15086277');
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
 <a name="getCityList"><h1>Список городов</h1></a>  
 Позволяет получить список городов, в которых есть пункты выдачи и список городов, в которых есть курьерская доставка.
 
@@ -763,6 +800,106 @@ try {
                  [Code] => 82010
                  [Name] => Симферополь Караимская_8201
                  [City] => Симферополь
+             )
+
+     */
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getOrderList"><h1>Список созданных заказов</h1></a>  
+Позволяет получить список созданных через API посылок.  
+Если не указывать диапазоны дат, то будет возвращен последний созданный заказ.  
+
+**Выходные параметры:**  
+- $from (string) - период от (дата в любом формате)
+- $to (string) - период до (дата в любом формате)
+     
+**Выходные параметры:**  
+Ассоциативный массив данных  
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getOrderList();
+    /*
+     Array
+     (
+         [0] => Array
+             (
+                 [track] => DUD15191668
+                 [label] =>
+                 [date] => 2019.05.06 15:32:51
+                 [send] => 1
+                 [barcode] => DUD8133818
+                 [imid] => 8133818
+             )
+     
+     )
+     */
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getOrdersInProgress"><h1>Список доставляющихся заказов</h1></a>  
+Получает информацию по заказам, которые фактически переданы на доставку в BoxBerry, но они еще не доставлены получателю.
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getOrdersInProgress();
+    /*
+     Array
+     (
+         [0] => Array
+             (
+                 [ID] => 4194177
+                 [Status] => На отделении-получателе
+                 [Price] => 0
+                 [Delivery_sum] => 0
+                 [Payment_sum] => 3289
+             )
+    
+         [1] => Array
+             (
+                 [ID] => 1178452
+                 [Status] => В пути на терминал
+                 [Price] => 0
+                 [Delivery_sum] => 0
+                 [Payment_sum] => 2600
              )
 
      */

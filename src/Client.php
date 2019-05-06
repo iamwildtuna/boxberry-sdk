@@ -77,6 +77,7 @@ class Client
 
     /**
      * Инициализирует вызов к API
+     *
      * @param $method
      * @param $params
      * @return mixed
@@ -92,6 +93,7 @@ class Client
                 $response = $this->httpClient->get('', ['query' => $params]);
                 break;
             case 'POST':
+                $response = $this->httpClient->post('', ['query' => $params]);
                 break;
         }
 
@@ -102,6 +104,10 @@ class Client
 
         if (empty($respBB))
             throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' пришел пустой ответ', $response->getStatusCode(), $response->getBody()->getContents());
+
+        if (!empty($respBB['err']))
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB['err'], $response->getStatusCode(), $response->getBody()->getContents());
+
 
         if (!empty($respBB[0]['err']))
             throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB[0]['err'], $response->getStatusCode(), $response->getBody()->getContents());
@@ -258,5 +264,48 @@ class Client
         $params = $calcParams->asArr();
         $response = $this->callApi('GET', 'DeliveryCosts', $params);
         return new TariffInfo($response);
+    }
+
+    /**
+     * @param string $order_id - ID заказа магазина или трекномер BB
+     * @return mixed
+     * @throws BoxBerryException
+     */
+    public function getOrderInfo($order_id)
+    {
+        return $this->callApi('GET', 'ParselCheck', ['ImId' => $order_id]);
+    }
+
+    /**
+     * Получает информацию по заказам, которые фактически переданы на доставку в BoxBerry, но они еще не доставлены получателю
+     *
+     * @return mixed
+     * @throws BoxBerryException
+     */
+    public function getOrdersInProgress()
+    {
+        return $this->callApi('GET', 'OrdersBalance');
+    }
+
+    /**
+     * Позволяет получить список созданных через API посылок
+     * Если не указывать диапазоны дат, то будет возвращен последний созданный заказ
+     *
+     * @param string $from - период от (дата в любом формате)
+     * @param string $to - период до (дата в любом формате)
+     * @return mixed
+     * @throws BoxBerryException
+     */
+    public function getOrderList($from = null, $to = null)
+    {
+        $params = [];
+
+        if ($from)
+            $params['from'] = date('Ymd', strtotime($from));
+
+        if ($to)
+            $params['to'] = date('Ymd', strtotime($to));
+
+        return $this->callApi('GET', 'ParselStory', $params);
     }
 }
