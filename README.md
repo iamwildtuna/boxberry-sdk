@@ -19,6 +19,7 @@
 [Список созданных заказов](#getOrderList)   
 [Список доставляющихся заказов](#getOrdersInProgress)   
 [Заявка на забор](#createIntake)  
+[Список заказов не добавленных в акт](#getOrdersNotAct)  
   
 
 <a name="links"><h1>Changelog</h1></a>
@@ -953,6 +954,53 @@ try {
     
     $intake_num = $bbClient->createIntake($intake); // $intake_num = 54851
     
+}
+
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getOrdersNotAct"><h1>Список заказов не добавленных в акт</h1></a>  
+Позволяет получить список всех трекинг кодов посылок которые есть в кабинете но не были сформированы в акт.
+
+**Входные параметры:** 
+- *$arr (bool)* - true в виде массива, false в виде строки (по умолчанию false)
+
+**Выходные параметры:**  
+array|string - массив трек-номеров или строка трек-номеров разделенная запятой
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $tracknums = $bbClient->getOrdersNotAct(); // Строкой
+    /*
+     array(
+         'ImIds'=>'XXXXXX,XXXXXX,XXXXXX'
+     );
+     */
+    $tracknums = $bbClient->getOrdersNotAct(true); // массивом
+    
+    /*
+     array(
+         'XXXXXX',
+         'XXXXXX',
+         'XXXXXX'
+     );
+     */
 }
 
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {

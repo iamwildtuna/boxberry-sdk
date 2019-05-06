@@ -326,4 +326,21 @@ class Client
 
         return $response['message'];
     }
+
+
+    /**
+     * Позволяет получить список всех трекинг кодов посылок которые есть в кабинете но не были сформированы в акт
+     *
+     * @param bool $arr - вернуть список в виде массива
+     * @return array|string
+     * @throws BoxBerryException
+     */
+    public function getOrdersNotAct($arr = false)
+    {
+        $response = $this->callApi('GET', 'ParselList');
+        if ($arr)
+            return explode(',', $response['ImIds']);
+        else
+            return $response['ImIds'];
+    }
 }
