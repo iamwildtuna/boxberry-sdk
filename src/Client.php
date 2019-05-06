@@ -2,6 +2,8 @@
 
 namespace WildTuna\BoxberrySdk;
 
+use WildTuna\BoxberrySdk\Entity\CalculateParams;
+use WildTuna\BoxberrySdk\Entity\TariffInfo;
 use WildTuna\BoxberrySdk\Exception\BoxBerryException;
 
 class Client
@@ -164,5 +166,91 @@ class Client
     {
         $response = $this->callApi('GET', 'ZipCheck', ['Zip' => $index]);
         return $response[0];
+    }
+
+    /**
+     * Информация о статусах заказа
+     *
+     * @param string $order_id - ID заказа магазина или трекномер BB
+     * @param bool $all true - полная информация, false - краткая информация
+     * @return mixed
+     * @throws BoxBerryException
+     */
+    public function getOrderStatuses($order_id, $all = false)
+    {
+        $method = 'ListStatuses';
+        if ($all)
+            $method .= 'Full';
+
+        return $this->callApi('GET', $method, ['ImId' => $order_id]);
+    }
+
+    /**
+     * Информация о услугах по отправлению
+     *
+     * @param string $order_id - ID заказа магазина или трекномер BB
+     * @return mixed
+     * @throws BoxBerryException
+     */
+    public function getOrderServices($order_id)
+    {
+        $response = $this->callApi('GET', 'ListServices', ['ImId' => $order_id]);
+        if (empty($response) || empty($response[0]['Sum'])) {
+            return false;
+        } else {
+            return $response;
+        }
+    }
+
+    /**
+     * Список городов, в которых осуществляется курьерская доставка
+     *
+     * @return mixed
+     * @throws BoxBerryException
+     */
+    public function getCourierCities()
+    {
+        return $this->callApi('GET', 'CourierListCities');
+    }
+
+    /**
+     * Список точек приема посылок
+     *
+     * @return mixed
+     * @throws BoxBerryException
+     */
+    public function getPointsForParcels()
+    {
+        return $this->callApi('GET', 'PointsForParcels');
+    }
+
+
+    /**
+     * Информация о ПВЗ
+     *
+     * @param int $point_id
+     * @param bool $photo
+     * @return mixed
+     * @throws BoxBerryException
+     */
+    public function pointDetails($point_id, $photo = false)
+    {
+        if ($photo) $photo = 1 ; else $photo = 0;
+
+        return $this->callApi('GET', 'PointsDescription', ['code' => $point_id, 'photo' => $photo]);
+    }
+
+    /**
+     * Расчета тарифа на доставку
+     *
+     * @param CalculateParams $calcParams
+     * @return TariffInfo
+     * @throws BoxBerryException
+     */
+    public function calcTariff($calcParams)
+    {
+        $params = $calcParams->asArr();
+        $response = $this->callApi('GET', 'DeliveryCosts', $params);
+        return new TariffInfo($response);
     }
 }

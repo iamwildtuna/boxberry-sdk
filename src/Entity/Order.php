@@ -1,5 +1,5 @@
 <?php
-namespace WildTuna\BoxberrySdk;
+namespace WildTuna\BoxberrySdk\Entity;
 
 class Order
 {
