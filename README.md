@@ -18,6 +18,7 @@
 [Список точек приема посылок](#getPointsForParcels)  
 [Список созданных заказов](#getOrderList)   
 [Список доставляющихся заказов](#getOrdersInProgress)   
+[Заявка на забор](#createIntake)  
   
 
 <a name="links"><h1>Changelog</h1></a>
@@ -904,6 +905,56 @@ try {
 
      */
 }
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="createIntake"><h1>Заявка на забор</h1></a>  
+Создание заявки на забор заказов.
+
+**Входные параметры:** 
+Объект *\WildTuna\BoxberrySdk\Entity\Intake* - параметры заявки
+
+**Выходные параметры:**  
+integer - номер заявки в системе BB
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $intake = new \WildTuna\BoxberrySdk\Entity\Intake();
+    $intake->setZip(105005);
+    $intake->setCity('Москва');
+    $intake->setStreet('Бауманская ул.');
+    $intake->setHouse(56);
+    $intake->setCorpus(5);
+    $intake->setBuilding('в');
+    $intake->setFlat(4);
+    $intake->setContactPerson('Иванов Иван Иванович');
+    $intake->setContactPhone('79095556677');
+    $intake->setTakingDate('2019-05-07');
+    $intake->setPlaces(2);
+    $intake->setVolume(5);
+    $intake->setWeight(5);
+    $intake->setComment('Примечание к заявке');
+    
+    $intake_num = $bbClient->createIntake($intake); // $intake_num = 54851
+    
+}
+
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB
     // $e->getMessage(); текст ошибки 

@@ -3,6 +3,7 @@
 namespace WildTuna\BoxberrySdk;
 
 use WildTuna\BoxberrySdk\Entity\CalculateParams;
+use WildTuna\BoxberrySdk\Entity\Intake;
 use WildTuna\BoxberrySdk\Entity\TariffInfo;
 use WildTuna\BoxberrySdk\Exception\BoxBerryException;
 
@@ -307,5 +308,22 @@ class Client
             $params['to'] = date('Ymd', strtotime($to));
 
         return $this->callApi('GET', 'ParselStory', $params);
+    }
+
+    /**
+     * Создание заявки на забор
+     *
+     * @param Intake $intake - заявка на забор
+     * @return int - номер созданной заявки на забор
+     * @throws BoxBerryException
+     */
+    public function createIntake($intake)
+    {
+        $params = $intake->asArr();
+        $response = $this->callApi('GET', 'CreateIntake', $params);
+        if (empty($response['message']))
+            throw new BoxBerryException('От сервера BoxBerry не пришел номер заявки!');
+
+        return $response['message'];
     }
 }
