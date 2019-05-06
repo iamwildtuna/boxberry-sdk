@@ -16,11 +16,15 @@ class Client
     private $httpClient = null;
 
 
-    public function __construct()
+    /**
+     * Client constructor.
+     * @param int $timeout - таймаут ожидания ответа от серверов BoxBerry в секундах
+     */
+    public function __construct($timeout = 300)
     {
         $this->httpClient = new \GuzzleHttp\Client([
             'base_uri' => 'http://api.boxberry.de/json.php',
-            'timeout' => 300,
+            'timeout' => $timeout,
         ]);
 
     }
@@ -45,6 +49,7 @@ class Client
     public function setToken(string $key, string $token)
     {
         $this->tokenList[$key] = $token;
+        $this->setCurrentToken($key);
     }
 
 
@@ -115,6 +120,7 @@ class Client
     public function getPvzList($prepaid = false, $short = false, $city_code = null)
     {
         $method = 'ListPoints';
+        $params = [];
 
         if ($short)
             $method .= 'Short';
@@ -158,7 +164,7 @@ class Client
     /**
      * Проверка возможности КД в заданном индексе
      *
-     * @param $index - Почтовый индекс получателя
+     * @param int $index - Почтовый индекс получателя
      * @return mixed
      * @throws BoxBerryException
      */
