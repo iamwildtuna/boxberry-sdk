@@ -5,6 +5,10 @@
 
 # Содержание      
 [Changelog](#changelog)  
+[Устанловка](#install)  
+[Настройка токенов](#settings)  
+[Создание заказа](#createOrder)  
+[Удаление заказа](#deleteOrder)  
 [Статусы заказа](#getOrderStatuses)  
 [Услуги в заказе](#getOrderServices)  
 [Список ПВЗ](#getPvzList)  
@@ -20,19 +24,22 @@
 [Список доставляющихся заказов](#getOrdersInProgress)   
 [Заявка на забор](#createIntake)  
 [Список заказов не добавленных в акт](#getOrdersNotAct)  
+[Создание акта передачи посылок](#createOrdersTransferAct)  
+[Список созданных актов передачи посылок](#getActsList)  
   
 
 <a name="links"><h1>Changelog</h1></a>
 
 - 0.3.0 - Реализованы основные функции API [сервисов BoxBerry](https://api.boxberry.de/?act=info&sub=api_info_services);
+- 0.4.0 - Реализованы основные функции API [справка API](https://api.boxberry.de/?act=info&sub=api_info_lk);
+- 0.5.0 - Реализованы все функции API BoxBerry.
 
-
-# Установка  
+<a name="install"><h1>Установка</h1></a>  
 Для установки можно использовать менеджер пакетов Composer
 
     composer require iamwildtuna/boxberry-sdk
     
-# Настройка токенов
+<a name="settings"><h1>Настройка токенов</h1></a>  
 API клиент позволяет использовать несколько токенов и переключатсья между ними.  
 При добавлении токенов последний добавленный становися выбранным.
 
@@ -50,7 +57,142 @@ $bbClient->setToken('another', 'another_bb_api_token');
 $bbClient->setCurrentToken('main');
 $bbClient->setCurrentToken('another');
 ````
-   
+
+<a name="createOrder"><h1>Создание заказа</h1></a>  
+Создание нового заказа в ЛК BB. Заказы бывают двух видов, до ПВЗ и курьерская доставка до двери.
+Если заказ в ПВЗ, то адрес доставки заполнять не требуется. 
+Подробнее можно [прочитать тут](https://api.boxberry.de/?act=info&sub=api_info_lk), функция ParselCreate.    
+  
+**Входные параметры:**  
+Объект *\WildTuna\BoxberrySdk\Entity\CalculateParams*
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+$bbClient = new \WildTuna\BoxberrySdk\Client();
+$bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+$bbClient->setCurrentToken('main'); // Указываем клиенту использовать ключ main для запросов
+
+try {
+    $order = new \WildTuna\BoxberrySdk\Entity\Order();
+    $order->setDeliveryDate('2019-05-10'); // Дата доставки от +1 день до +5 дней от текущий даты (только для доставки по Москве, МО и Санкт-Петербургу)
+    $order->setOrderId('9999999'); // ID заказа в ИМ
+    $order->setPalletNum(1); // Номер паллета
+    $order->setBarcode('12345678'); // ШК заказа
+    $order->setValuatedAmount(1000); // Объявленная стоимость
+    $order->setPaymentAmount(1300); // Сумма к оплате
+    $order->setDeliveryAmount(300); // Стоимость доставки
+    $order->setComment('Тестовый заказ'); // Комментарий к заказу
+    // $order->setVid(1); // Тип доставки (1 - ПВЗ, 2 - КД)
+    // $order->setPvzCode(61831); // Код ПВЗ
+    // $order->setPointOfEntry('010'); // Код пункта поступления
+    $order->setVid(2); // Тип доставки (1 - ПВЗ, 2 - КД)
+    
+    $customer = new \WildTuna\BoxberrySdk\Entity\Customer();
+    $customer->setFio('Иванов Петр Николаевич'); // ФИО получателя
+    $customer->setPhone('79995556677'); // Контактный номер телефона
+    $customer->setSecondPhone('79995556677'); // Дополнительный номер телефона
+    $customer->setEmail('test@test.ru'); // E-mail для оповещений
+    
+    $customer->setIndex(115551); // Почтовый индекс получателя (не заполянется, если в ПВЗ)
+    $customer->setCity('Москва'); // (не заполянется, если в ПВЗ)
+    $customer->setAddress('Москва, ул. Маршала Захарова, д. 3а кв. 1'); // Адрес доставки (не заполянется, если в ПВЗ)
+    $customer->setTimeFrom('10:00'); // Время доставки от
+    $customer->setTimeTo('18:00'); // Время доставки до
+    $customer->setTimeFromSecond('10:00'); // Альтернативное время доставки от
+    $customer->setTimeToSecond('18:00'); // Альтернативное время доставки до
+    $customer->setDeliveryTime('С 10 до 19, за час позвонить'); // Время доставки текстовый формат
+    
+    // Поля ниже заполняются для организации (не обязательные)
+    //$customer->setOrgName('ООО Ромашка'); // Наименование организации
+    //$customer->setOrgAddress('123456 Москва, Красная площадь дом 1'); // Арес организации
+    //$customer->setOrgInn('7731347089'); // ИНН организации
+    //$customer->setOrgKpp('773101001'); // КПП организации
+    //$customer->setOrgRs('40702810500036265800'); // РС организации
+    //$customer->setOrgKs('30101810400000000225'); // КС банка
+    //$customer->setOrgBankName('ПАО Сбербанк'); // Наименование банка
+    //$customer->setOrgBankBik('044525225'); // БИК банка
+    
+    $order->setCustomer($customer);
+    
+    // Создаем места в заказе
+    $place = new \WildTuna\BoxberrySdk\Entity\Place();
+    $place->setWeight(1000); // Вес места в граммах
+    $place->setBarcode('1234567890'); // ШК места
+    $order->setPlaces($place);
+    
+    // Создаем товары
+    $item = new \WildTuna\BoxberrySdk\Entity\Item();
+    $item->setId(1); // ID товара в БД ИМ'
+    $item->setName('Тестовый товар 1'); // Название товара
+    $item->setAmount(100); // Цена единицы товара
+    $item->setQuantity(10); // Количество
+    $item->setVat(20); // Ставка НДС
+    $item->setUnit('шт'); // Единица измерения
+    $order->setItems($item);
+    $result = $bbClient->createOrder($order);
+    
+    /*
+     array(
+       'track'=>'DUD15224387', // Трек-номер BB
+       'label'=>'URI' // Ссылка на скачивание PDF файла с этикетками
+     );
+     */
+}
+
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+````
+
+<a name="deleteOrder"><h1>Удаление заказа</h1></a>  
+Удаление заказа в ЛК BB, если он не проведен в акте.
+  
+**Входные параметры:**  
+ - *order_id (string)* - трек-номер / номер ИМ
+
+**Выходные параметры:**  
+(boolead) - true успешно удален, false - не удален
+
+**Примеры вызова:**
+```php
+<?php
+$bbClient = new \WildTuna\BoxberrySdk\Client();
+$bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+$bbClient->setCurrentToken('main'); // Указываем клиенту использовать ключ main для запросов
+
+try {
+    $order = new \WildTuna\BoxberrySdk\Entity\Order();
+    $result = $bbClient->deleteOrder('DUD15224387'); 
+    
+    if ($result) {
+        // Заказ удален
+    } else {
+        // Заказ не удален, некорректный ответ сервера BB
+    }
+}
+
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+````
     
 <a name="getOrderStatuses"><h1>Статусы заказа</h1></a>  
 Возвращает статусы заказа по трек-номеру BB или номеру заказа ИМ.
@@ -60,7 +202,7 @@ $bbClient->setCurrentToken('another');
  - *all (boolean)* - true - полная информация, false - краткая информация (по умолчанию false)
 
 **Выходные параметры:**  
-Ассоциативный массив данных о ПВЗ
+Ассоциативный массив данных
 
 **Примеры вызова:**
 ```php
@@ -189,7 +331,7 @@ catch (\Exception $e) {
  - *order_id (string)* - трек-номер / номер ИМ
  
 **Выходные параметры:**  
-Ассоциативный массив данных о ПВЗ
+Ассоциативный массив данных
 
 **Примеры вызова:**
 ```php
@@ -269,7 +411,7 @@ catch (\Exception $e) {
  - *$city_code (integer)* - позволяет выбрать ПВЗ только в заданном городе BoxBerry (по умолчанию null)
 
 **Выходные параметры:**  
-Ассоциативный массив данных о ПВЗ
+Ассоциативный массив данных
 
 **Примеры вызова:**
 ```php
@@ -413,7 +555,7 @@ catch (\Exception $e) {
 - *$photo (boolean)* - возврат фото ПВЗ (по умолчанию false)  
 
 **Выходные параметры:**  
-Ассоциативный массив данных о ПВЗ
+Ассоциативный массив данных
 
 **Примеры вызова:**
 ```php
@@ -998,6 +1140,95 @@ try {
      */
 }
 
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="createOrdersTransferAct"><h1>Создание акта передачи посылок</h1></a>  
+Создание акта передачи посылок в BoxBerry.  
+**Внимание!** сервис работает только с заказами созданными через API ЛК.  
+
+**Выходные параметры:**  
+Массив трек-номеров заказов
+     
+**Выходные параметры:**  
+Ассоциативный массив данных  
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $tracknums = ['DUD15086277', 'DUD15086278', 'DUD15086279', 'DUD15086280'];
+    $result = $bbClient->createOrdersTransferAct($tracknums);
+    /*
+     Array
+     (
+        'id' => Номер акта,
+        'label' => 'URI',
+        'sticker' => 'URI' // Ссылка на этикетки
+     )
+     */
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getActsList"><h1>Список созданных актов передачи посылок</h1></a>  
+Позволяет получить список созданных через API актов передачи заказов.  
+Если не указывать диапазоны дат, то будет возвращен последний созданный акт.  
+**Внимание!** сервис работает только с актами созданными через API ЛК.  
+
+**Выходные параметры:**  
+- $from (string) - период от (дата в любом формате)
+- $to (string) - период до (дата в любом формате)
+     
+**Выходные параметры:**  
+Ассоциативный массив данных  
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getActsList();
+    /*
+     Array
+     (
+         [0] => Array
+             (
+                'track'=>'XXXXXX,XXXXXX,XXXXXX', // список трекинг кодов посылок в акте,
+                'label'=>'URI', // ссылка на скачивание акта, если доступна,
+                'date'=>'2019.05.07' // дата создания посылки в формате YYYY.MM.DD HH:MM:SS.
+             )
+     
+     )
+     */
+}
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB
     // $e->getMessage(); текст ошибки 

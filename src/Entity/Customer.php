@@ -67,7 +67,7 @@ class Customer
      * БИК банка
      * @var int
      */
-    private $org_bik = null;
+    private $org_bank_bik = null;
 
     /**
      * Наименование банка
@@ -126,7 +126,7 @@ class Customer
     /**
      * @return string
      */
-    public function getFio(): string
+    public function getFio()
     {
         return $this->fio;
     }
@@ -134,7 +134,7 @@ class Customer
     /**
      * @param string $fio
      */
-    public function setFio(string $fio): void
+    public function setFio($fio)
     {
         $this->fio = $fio;
     }
@@ -142,7 +142,7 @@ class Customer
     /**
      * @return string
      */
-    public function getPhone(): string
+    public function getPhone()
     {
         return $this->phone;
     }
@@ -150,7 +150,7 @@ class Customer
     /**
      * @param string $phone
      */
-    public function setPhone(string $phone): void
+    public function setPhone($phone)
     {
         $this->phone = $phone;
     }
@@ -158,7 +158,7 @@ class Customer
     /**
      * @return string
      */
-    public function getSecondPhone(): string
+    public function getSecondPhone()
     {
         return $this->second_phone;
     }
@@ -166,7 +166,7 @@ class Customer
     /**
      * @param string $second_phone
      */
-    public function setSecondPhone(string $second_phone): void
+    public function setSecondPhone($second_phone)
     {
         $this->second_phone = $second_phone;
     }
@@ -174,7 +174,7 @@ class Customer
     /**
      * @return string
      */
-    public function getEmail(): string
+    public function getEmail()
     {
         return $this->email;
     }
@@ -182,7 +182,7 @@ class Customer
     /**
      * @param string $email
      */
-    public function setEmail(string $email): void
+    public function setEmail($email)
     {
         $this->email = $email;
     }
@@ -190,7 +190,7 @@ class Customer
     /**
      * @return string
      */
-    public function getOrgName(): string
+    public function getOrgName()
     {
         return $this->org_name;
     }
@@ -198,7 +198,7 @@ class Customer
     /**
      * @param string $org_name
      */
-    public function setOrgName(string $org_name): void
+    public function setOrgName($org_name)
     {
         $this->org_name = $org_name;
     }
@@ -206,7 +206,7 @@ class Customer
     /**
      * @return string
      */
-    public function getOrgAddress(): string
+    public function getOrgAddress()
     {
         return $this->org_address;
     }
@@ -214,7 +214,7 @@ class Customer
     /**
      * @param string $org_address
      */
-    public function setOrgAddress(string $org_address): void
+    public function setOrgAddress($org_address)
     {
         $this->org_address = $org_address;
     }
@@ -222,7 +222,7 @@ class Customer
     /**
      * @return string
      */
-    public function getOrgInn(): string
+    public function getOrgInn()
     {
         return $this->org_inn;
     }
@@ -230,7 +230,7 @@ class Customer
     /**
      * @param string $org_inn
      */
-    public function setOrgInn(string $org_inn): void
+    public function setOrgInn($org_inn)
     {
         $this->org_inn = $org_inn;
     }
@@ -238,7 +238,7 @@ class Customer
     /**
      * @return string
      */
-    public function getOrgKpp(): string
+    public function getOrgKpp()
     {
         return $this->org_kpp;
     }
@@ -246,7 +246,7 @@ class Customer
     /**
      * @param string $org_kpp
      */
-    public function setOrgKpp(string $org_kpp): void
+    public function setOrgKpp($org_kpp)
     {
         $this->org_kpp = $org_kpp;
     }
@@ -254,7 +254,7 @@ class Customer
     /**
      * @return string
      */
-    public function getOrgRs(): string
+    public function getOrgRs()
     {
         return $this->org_rs;
     }
@@ -262,7 +262,7 @@ class Customer
     /**
      * @param string $org_rs
      */
-    public function setOrgRs(string $org_rs): void
+    public function setOrgRs($org_rs)
     {
         $this->org_rs = $org_rs;
     }
@@ -270,7 +270,7 @@ class Customer
     /**
      * @return string
      */
-    public function getOrgKs(): string
+    public function getOrgKs()
     {
         return $this->org_ks;
     }
@@ -278,7 +278,7 @@ class Customer
     /**
      * @param string $org_ks
      */
-    public function setOrgKs(string $org_ks): void
+    public function setOrgKs($org_ks)
     {
         $this->org_ks = $org_ks;
     }
@@ -286,23 +286,23 @@ class Customer
     /**
      * @return int
      */
-    public function getOrgBik(): int
+    public function getOrgBankBik()
     {
-        return $this->org_bik;
+        return $this->org_bank_bik;
     }
 
     /**
      * @param int $org_bik
      */
-    public function setOrgBik(int $org_bik): void
+    public function setOrgBankBik($org_bank_bik)
     {
-        $this->org_bik = $org_bik;
+        $this->org_bank_bik = $org_bank_bik;
     }
 
     /**
      * @return string
      */
-    public function getOrgBankName(): string
+    public function getOrgBankName()
     {
         return $this->org_bank_name;
     }
@@ -310,7 +310,7 @@ class Customer
     /**
      * @param string $org_bank_name
      */
-    public function setOrgBankName(string $org_bank_name): void
+    public function setOrgBankName($org_bank_name)
     {
         $this->org_bank_name = $org_bank_name;
     }
@@ -318,7 +318,7 @@ class Customer
     /**
      * @return int
      */
-    public function getIndex(): int
+    public function getIndex()
     {
         return $this->index;
     }
@@ -326,7 +326,7 @@ class Customer
     /**
      * @param int $index
      */
-    public function setIndex(int $index): void
+    public function setIndex($index)
     {
         $this->index = $index;
     }
@@ -334,7 +334,7 @@ class Customer
     /**
      * @return string
      */
-    public function getCity(): string
+    public function getCity()
     {
         return $this->city;
     }
@@ -342,7 +342,7 @@ class Customer
     /**
      * @param string $city
      */
-    public function setCity(string $city): void
+    public function setCity($city)
     {
         $this->city = $city;
     }
@@ -350,7 +350,7 @@ class Customer
     /**
      * @return string
      */
-    public function getAddress(): string
+    public function getAddress()
     {
         return $this->address;
     }
@@ -358,7 +358,7 @@ class Customer
     /**
      * @param string $address
      */
-    public function setAddress(string $address): void
+    public function setAddress($address)
     {
         $this->address = $address;
     }
@@ -366,7 +366,7 @@ class Customer
     /**
      * @return string
      */
-    public function getTimeFrom(): string
+    public function getTimeFrom()
     {
         return $this->time_from;
     }
@@ -374,7 +374,7 @@ class Customer
     /**
      * @param string $time_from
      */
-    public function setTimeFrom(string $time_from): void
+    public function setTimeFrom($time_from)
     {
         $this->time_from = $time_from;
     }
@@ -382,7 +382,7 @@ class Customer
     /**
      * @return string
      */
-    public function getTimeTo(): string
+    public function getTimeTo()
     {
         return $this->time_to;
     }
@@ -390,7 +390,7 @@ class Customer
     /**
      * @param string $time_to
      */
-    public function setTimeTo(string $time_to): void
+    public function setTimeTo($time_to)
     {
         $this->time_to = $time_to;
     }
@@ -398,7 +398,7 @@ class Customer
     /**
      * @return string
      */
-    public function getTimeFromSecond(): string
+    public function getTimeFromSecond()
     {
         return $this->time_from_second;
     }
@@ -406,7 +406,7 @@ class Customer
     /**
      * @param string $time_from_second
      */
-    public function setTimeFromSecond(string $time_from_second): void
+    public function setTimeFromSecond($time_from_second)
     {
         $this->time_from_second = $time_from_second;
     }
@@ -414,7 +414,7 @@ class Customer
     /**
      * @return string
      */
-    public function getTimeToSecond(): string
+    public function getTimeToSecond()
     {
         return $this->time_to_second;
     }
@@ -422,7 +422,7 @@ class Customer
     /**
      * @param string $time_to_second
      */
-    public function setTimeToSecond(string $time_to_second): void
+    public function setTimeToSecond($time_to_second)
     {
         $this->time_to_second = $time_to_second;
     }
@@ -430,7 +430,7 @@ class Customer
     /**
      * @return string
      */
-    public function getDeliveryTime(): string
+    public function getDeliveryTime()
     {
         return $this->delivery_time;
     }
@@ -438,7 +438,7 @@ class Customer
     /**
      * @param string $delivery_time
      */
-    public function setDeliveryTime(string $delivery_time): void
+    public function setDeliveryTime($delivery_time)
     {
         $this->delivery_time = $delivery_time;
     }

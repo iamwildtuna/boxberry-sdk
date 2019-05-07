@@ -86,15 +86,108 @@ class Order
     private $places = [];
 
     /**
+     * Дата доставки
+     * @var string
+     */
+    private $delivery_date = '';
+
+    /**
      * Комментарий
      * @var string
      */
     private $comment = '';
 
+    public function asArr()
+    {
+        $params = [];
+        $params['updateByTrack'] = $this->track_num;
+        $params['order_id'] = $this->order_id;
+        $params['PalletNumber'] = $this->pallet_num;
+        $params['barcode'] = $this->barcode;
+        $params['price'] = $this->valuated_amount;
+        $params['payment_sum'] = $this->payment_amount;
+        $params['delivery_sum'] = $this->delivery_amount;
+        $params['vid'] = $this->vid;
+        $params['shop']['name'] = $this->pvz_code;
+        $params['shop']['name1'] = $this->point_of_entry;
+
+        $customer = [];
+        $customer['fio'] = $this->customer->getFio();
+        $customer['phone'] = $this->customer->getPhone();
+        $customer['phone2'] = $this->customer->getSecondPhone();
+        $customer['email'] = $this->customer->getEmail();
+        $customer['name'] = $this->customer->getOrgName();
+        $customer['address'] = $this->customer->getOrgAddress();
+        $customer['inn'] = $this->customer->getOrgInn();
+        $customer['kpp'] = $this->customer->getOrgKpp();
+        $customer['r_s'] = $this->customer->getOrgRs();
+        $customer['bank'] = $this->customer->getOrgBankName();
+        $customer['kor_s'] = $this->customer->getOrgKs();
+        $customer['bik'] = $this->customer->getOrgBankBik();
+        $params['customer'] = $customer;
+
+        $kurdost = [];
+        $kurdost['index'] = $this->customer->getIndex();
+        $kurdost['citi'] = $this->customer->getCity();
+        $kurdost['addressp'] = $this->customer->getAddress();
+        $kurdost['timesfrom1'] = $this->customer->getTimeFrom();
+        $kurdost['timesto1'] = $this->customer->getTimeTo();
+        $kurdost['timesfrom2'] = $this->customer->getTimeFromSecond();
+        $kurdost['timesto2'] = $this->customer->getTimeToSecond();
+        $kurdost['timep'] = $this->customer->getDeliveryTime();
+        $kurdost['delivery_date'] = $this->delivery_date;
+        $kurdost['comentk'] = $this->comment;
+        $params['kurdost'] = $kurdost;
+
+
+        if (empty($this->places))
+            throw new \InvalidArgumentException('В заказе не заполнена информация о местах!');
+
+        if (count($this->places) > 5)
+            throw new \InvalidArgumentException('В заказе не может быть больше 5 мест!');
+
+        $weights = [];
+        /**
+         * @var Place $place
+         */
+        foreach ($this->places as $num => $place) {
+            $num++;
+
+            if ($num === 1) {
+                $num = '';
+            }
+
+            $weights['weight'.$num] = $place->getWeight();
+            $weights['barcode'.$num] = $place->getBarcode();
+        }
+        $params['weights'] = $weights;
+
+        if (empty($this->items))
+            throw new \InvalidArgumentException('В заказе не заполнены товары!');
+
+        $items = [];
+        /**
+         * @var Item $item
+         */
+        foreach ($this->items as $num => $item) {
+            $bbItem['id'] = $item->getId();
+            $bbItem['name'] = $item->getName();
+            $bbItem['UnitName'] = $item->getUnit();
+            $bbItem['nds'] = $item->getVat();
+            $bbItem['price'] = $item->getAmount();
+            $bbItem['quantity'] = $item->getQuantity();
+            $items[] = $bbItem;
+        }
+
+        $params['items'] = $items;
+
+        return $params;
+    }
+
     /**
      * @return string
      */
-    public function getTrackNum(): string
+    public function getTrackNum()
     {
         return $this->track_num;
     }
@@ -102,7 +195,7 @@ class Order
     /**
      * @param string $track_num
      */
-    public function setTrackNum(string $track_num): void
+    public function setTrackNum($track_num)
     {
         $this->track_num = $track_num;
     }
@@ -110,7 +203,7 @@ class Order
     /**
      * @return string
      */
-    public function getOrderId(): string
+    public function getOrderId()
     {
         return $this->order_id;
     }
@@ -118,7 +211,7 @@ class Order
     /**
      * @param string $order_id
      */
-    public function setOrderId(string $order_id): void
+    public function setOrderId($order_id)
     {
         $this->order_id = $order_id;
     }
@@ -126,7 +219,7 @@ class Order
     /**
      * @return int
      */
-    public function getPalletNum(): int
+    public function getPalletNum()
     {
         return $this->pallet_num;
     }
@@ -134,7 +227,7 @@ class Order
     /**
      * @param int $pallet_num
      */
-    public function setPalletNum(int $pallet_num): void
+    public function setPalletNum($pallet_num)
     {
         $this->pallet_num = $pallet_num;
     }
@@ -142,7 +235,7 @@ class Order
     /**
      * @return string
      */
-    public function getBarcode(): string
+    public function getBarcode()
     {
         return $this->barcode;
     }
@@ -150,7 +243,7 @@ class Order
     /**
      * @param string $barcode
      */
-    public function setBarcode(string $barcode): void
+    public function setBarcode($barcode)
     {
         $this->barcode = $barcode;
     }
@@ -158,7 +251,7 @@ class Order
     /**
      * @return float
      */
-    public function getValuatedAmount(): float
+    public function getValuatedAmount()
     {
         return $this->valuated_amount;
     }
@@ -166,7 +259,7 @@ class Order
     /**
      * @param float $valuated_amount
      */
-    public function setValuatedAmount(float $valuated_amount): void
+    public function setValuatedAmount($valuated_amount)
     {
         $this->valuated_amount = $valuated_amount;
     }
@@ -174,7 +267,7 @@ class Order
     /**
      * @return float
      */
-    public function getPaymentAmount(): float
+    public function getPaymentAmount()
     {
         return $this->payment_amount;
     }
@@ -182,7 +275,7 @@ class Order
     /**
      * @param float $payment_amount
      */
-    public function setPaymentAmount(float $payment_amount): void
+    public function setPaymentAmount($payment_amount)
     {
         $this->payment_amount = $payment_amount;
     }
@@ -190,7 +283,7 @@ class Order
     /**
      * @return float
      */
-    public function getDeliveryAmount(): float
+    public function getDeliveryAmount()
     {
         return $this->delivery_amount;
     }
@@ -198,7 +291,7 @@ class Order
     /**
      * @param float $delivery_amount
      */
-    public function setDeliveryAmount(float $delivery_amount): void
+    public function setDeliveryAmount($delivery_amount)
     {
         $this->delivery_amount = $delivery_amount;
     }
@@ -206,7 +299,7 @@ class Order
     /**
      * @return int
      */
-    public function getVid(): int
+    public function getVid()
     {
         return $this->vid;
     }
@@ -214,7 +307,7 @@ class Order
     /**
      * @param int $vid
      */
-    public function setVid(int $vid): void
+    public function setVid($vid)
     {
         $this->vid = $vid;
     }
@@ -222,7 +315,7 @@ class Order
     /**
      * @return string
      */
-    public function getPvzCode(): string
+    public function getPvzCode()
     {
         return $this->pvz_code;
     }
@@ -230,7 +323,7 @@ class Order
     /**
      * @param string $pvz_code
      */
-    public function setPvzCode(string $pvz_code): void
+    public function setPvzCode($pvz_code)
     {
         $this->pvz_code = $pvz_code;
     }
@@ -238,7 +331,7 @@ class Order
     /**
      * @return string
      */
-    public function getPointOfEntry(): string
+    public function getPointOfEntry()
     {
         return $this->point_of_entry;
     }
@@ -246,7 +339,7 @@ class Order
     /**
      * @param string $point_of_entry
      */
-    public function setPointOfEntry(string $point_of_entry): void
+    public function setPointOfEntry($point_of_entry)
     {
         $this->point_of_entry = $point_of_entry;
     }
@@ -254,7 +347,7 @@ class Order
     /**
      * @return Customer
      */
-    public function getCustomer(): Customer
+    public function getCustomer()
     {
         return $this->customer;
     }
@@ -262,7 +355,7 @@ class Order
     /**
      * @param Customer $customer
      */
-    public function setCustomer(Customer $customer): void
+    public function setCustomer($customer)
     {
         $this->customer = $customer;
     }
@@ -270,7 +363,7 @@ class Order
     /**
      * @return array
      */
-    public function getItems(): array
+    public function getItems()
     {
         return $this->items;
     }
@@ -278,7 +371,7 @@ class Order
     /**
      * @param Item $item
      */
-    public function setItems(Item $item): void
+    public function setItems($item)
     {
         $this->items[] = $item;
     }
@@ -286,7 +379,7 @@ class Order
     /**
      * @return array
      */
-    public function getPlaces(): array
+    public function getPlaces()
     {
         return $this->places;
     }
@@ -294,7 +387,7 @@ class Order
     /**
      * @param Place $place
      */
-    public function setPlaces(Place $place): void
+    public function setPlaces($place)
     {
         $this->places[] = $place;
     }
@@ -302,7 +395,23 @@ class Order
     /**
      * @return string
      */
-    public function getComment(): string
+    public function getDeliveryDate()
+    {
+        return $this->delivery_date;
+    }
+
+    /**
+     * @param string $delivery_date
+     */
+    public function setDeliveryDate($delivery_date)
+    {
+        $this->delivery_date = $delivery_date;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
     {
         return $this->comment;
     }
@@ -310,7 +419,7 @@ class Order
     /**
      * @param string $comment
      */
-    public function setComment(string $comment): void
+    public function setComment($comment)
     {
         $this->comment = $comment;
     }

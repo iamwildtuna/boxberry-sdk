@@ -2,8 +2,10 @@
 
 namespace WildTuna\BoxberrySdk;
 
+use http\Exception\InvalidArgumentException;
 use WildTuna\BoxberrySdk\Entity\CalculateParams;
 use WildTuna\BoxberrySdk\Entity\Intake;
+use WildTuna\BoxberrySdk\Entity\Order;
 use WildTuna\BoxberrySdk\Entity\TariffInfo;
 use WildTuna\BoxberrySdk\Exception\BoxBerryException;
 
@@ -81,11 +83,18 @@ class Client
      *
      * @param $method
      * @param $params
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     private function callApi($type, $method, $params = [])
     {
+        if ($type == 'POST') {
+            $data = $params;
+            $params = [];
+            $params['sdata'] = json_encode($data);
+            unset($data);
+        }
+
         $params['token'] = $this->getCurrentToken();
         $params['method'] = $method;
 
@@ -94,7 +103,7 @@ class Client
                 $response = $this->httpClient->get('', ['query' => $params]);
                 break;
             case 'POST':
-                $response = $this->httpClient->post('', ['query' => $params]);
+                $response = $this->httpClient->post('', ['form_params' => $params]);
                 break;
         }
 
@@ -145,7 +154,7 @@ class Client
      * Возвращает список городов, в которых есть пункты выдачи заказов
      *
      * @param boolean $all - true - список городов, в которых осуществляется доставка + в которых есть ПВЗ
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function getCityList($all = false)
@@ -160,7 +169,7 @@ class Client
     /**
      * Возвращает список почтовых индексов, для которых возможна курьерская доставка
      *
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function getZipList()
@@ -172,7 +181,7 @@ class Client
      * Проверка возможности КД в заданном индексе
      *
      * @param int $index - Почтовый индекс получателя
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function checkZip($index)
@@ -186,7 +195,7 @@ class Client
      *
      * @param string $order_id - ID заказа магазина или трекномер BB
      * @param bool $all true - полная информация, false - краткая информация
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function getOrderStatuses($order_id, $all = false)
@@ -218,7 +227,7 @@ class Client
     /**
      * Список городов, в которых осуществляется курьерская доставка
      *
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function getCourierCities()
@@ -229,7 +238,7 @@ class Client
     /**
      * Список точек приема посылок
      *
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function getPointsForParcels()
@@ -243,7 +252,7 @@ class Client
      *
      * @param int $point_id
      * @param bool $photo
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function pointDetails($point_id, $photo = false)
@@ -269,7 +278,7 @@ class Client
 
     /**
      * @param string $order_id - ID заказа магазина или трекномер BB
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function getOrderInfo($order_id)
@@ -280,7 +289,7 @@ class Client
     /**
      * Получает информацию по заказам, которые фактически переданы на доставку в BoxBerry, но они еще не доставлены получателю
      *
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function getOrdersInProgress()
@@ -294,7 +303,7 @@ class Client
      *
      * @param string $from - период от (дата в любом формате)
      * @param string $to - период до (дата в любом формате)
-     * @return mixed
+     * @return array
      * @throws BoxBerryException
      */
     public function getOrderList($from = null, $to = null)
@@ -342,5 +351,75 @@ class Client
             return explode(',', $response['ImIds']);
         else
             return $response['ImIds'];
+    }
+
+
+    /**
+     * Позволяет удалить заказ, который не проводился в акте
+     *
+     * @param string $order_id - ID заказа магазина или трекномер BB
+     * @return boolean
+     * @throws BoxBerryException
+     */
+    public function deleteOrder($order_id)
+    {
+        $response = $this->callApi('GET', 'ParselDel', ['ImId' => $order_id]);
+        if (!empty($response['text']) && $response['text'] == 'ok') {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Создание заказа
+     *
+     * @param Order $order - Параметры заказа
+     * @return array
+     * @throws BoxBerryException
+     */
+    public function createOrder($order)
+    {
+        $params = $order->asArr();
+        return $this->callApi('POST', 'ParselCreate', $params);
+    }
+
+
+    /**
+     * Создание акта передачи посылок в BB.
+     * Внимание! сервис работает только с посылками созданными через API ЛК.
+     *
+     * @param $track_nums
+     * @return array
+     * @throws BoxBerryException
+     */
+    public function createOrdersTransferAct($track_nums)
+    {
+        if (empty($track_nums) || !is_array($track_nums))
+            throw new \InvalidArgumentException('Не передан массив трек-номеров заказов!');
+
+        return $this-$this->callApi('GET', 'ParselSend', ['ImIds' => implode(',', $track_nums)]);
+    }
+
+    /**
+     * Позволяет получить список созданных через API актов передачи заказов
+     * Если не указывать диапазоны дат, то будет возвращен последний созданный акт
+     *
+     * @param string $from - период от (дата в любом формате)
+     * @param string $to - период до (дата в любом формате)
+     * @return array
+     * @throws BoxBerryException
+     */
+    public function getActsList($from = null, $to = null)
+    {
+        $params = [];
+
+        if ($from)
+            $params['from'] = date('Ymd', strtotime($from));
+
+        if ($to)
+            $params['to'] = date('Ymd', strtotime($to));
+
+        return $this->callApi('GET', 'ParselSendStory', $params);
     }
 }
