@@ -5,7 +5,7 @@
 
 # Содержание      
 [Changelog](#changelog)  
-[Устанловка](#install)  
+[Установка](#install)  
 [Настройка токенов](#settings)  
 [Создание заказа](#createOrder)  
 [Удаление заказа](#deleteOrder)  
