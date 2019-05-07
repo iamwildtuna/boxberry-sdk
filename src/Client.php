@@ -2,7 +2,6 @@
 
 namespace WildTuna\BoxberrySdk;
 
-use http\Exception\InvalidArgumentException;
 use WildTuna\BoxberrySdk\Entity\CalculateParams;
 use WildTuna\BoxberrySdk\Entity\Intake;
 use WildTuna\BoxberrySdk\Entity\Order;
@@ -38,7 +37,7 @@ class Client
      * @param string $key - Ключ токена
      * @return string|false
      */
-    public function getToken(string $key)
+    public function getToken($key)
     {
         return !empty($this->tokenList[$key]) ? $this->tokenList[$key] : false;
     }
@@ -49,7 +48,7 @@ class Client
      * @param string $key  - Ключ токена
      * @param string$token - Токен доступа к API
      */
-    public function setToken(string $key, string $token)
+    public function setToken($key, $token)
     {
         $this->tokenList[$key] = $token;
         $this->setCurrentToken($key);
@@ -62,7 +61,7 @@ class Client
      * @param string $key - Ключ токена
      * @throws \InvalidArgumentException
      */
-    public function setCurrentToken(string $key)
+    public function setCurrentToken($key)
     {
         $this->currentToken = $this->getToken($key);
         if (empty($this->currentToken))
