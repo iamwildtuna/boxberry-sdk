@@ -94,7 +94,7 @@ class CalculateParams
     /**
      * @return int
      */
-    public function getWeight(): int
+    public function getWeight()
     {
         return $this->weight;
     }
@@ -102,7 +102,7 @@ class CalculateParams
     /**
      * @param int $weight
      */
-    public function setWeight(int $weight): void
+    public function setWeight($weight)
     {
         $this->weight = $weight;
     }
@@ -110,7 +110,7 @@ class CalculateParams
     /**
      * @return int
      */
-    public function getPvz(): int
+    public function getPvz()
     {
         return $this->pvz;
     }
@@ -118,7 +118,7 @@ class CalculateParams
     /**
      * @param int $pvz
      */
-    public function setPvz(int $pvz): void
+    public function setPvz($pvz)
     {
         $this->pvz = $pvz;
     }
@@ -126,7 +126,7 @@ class CalculateParams
     /**
      * @return float
      */
-    public function getAmount(): float
+    public function getAmount()
     {
         return $this->amount;
     }
@@ -134,7 +134,7 @@ class CalculateParams
     /**
      * @param float $amount
      */
-    public function setAmount(float $amount): void
+    public function setAmount($amount)
     {
         $this->amount = $amount;
     }
@@ -142,7 +142,7 @@ class CalculateParams
     /**
      * @return float
      */
-    public function getPaymentAmount(): float
+    public function getPaymentAmount()
     {
         return $this->payment_amount;
     }
@@ -150,7 +150,7 @@ class CalculateParams
     /**
      * @param float $payment_amount
      */
-    public function setPaymentAmount(float $payment_amount): void
+    public function setPaymentAmount($payment_amount)
     {
         $this->payment_amount = $payment_amount;
     }
@@ -158,7 +158,7 @@ class CalculateParams
     /**
      * @return float
      */
-    public function getDeliveryAmount(): float
+    public function getDeliveryAmount()
     {
         return $this->delivery_amount;
     }
@@ -166,7 +166,7 @@ class CalculateParams
     /**
      * @param float $delivery_amount
      */
-    public function setDeliveryAmount(float $delivery_amount): void
+    public function setDeliveryAmount($delivery_amount)
     {
         $this->delivery_amount = $delivery_amount;
     }
@@ -174,7 +174,7 @@ class CalculateParams
     /**
      * @return int
      */
-    public function getTargetStart(): int
+    public function getTargetStart()
     {
         return $this->target_start;
     }
@@ -182,7 +182,7 @@ class CalculateParams
     /**
      * @param int $target_start
      */
-    public function setTargetStart(int $target_start): void
+    public function setTargetStart($target_start)
     {
         $this->target_start = $target_start;
     }
@@ -190,7 +190,7 @@ class CalculateParams
     /**
      * @return float
      */
-    public function getHeight(): float
+    public function getHeight()
     {
         return $this->height;
     }
@@ -198,7 +198,7 @@ class CalculateParams
     /**
      * @param float $height
      */
-    public function setHeight(float $height): void
+    public function setHeight($height)
     {
         $this->height = $height;
     }
@@ -206,7 +206,7 @@ class CalculateParams
     /**
      * @return float
      */
-    public function getWidth(): float
+    public function getWidth()
     {
         return $this->width;
     }
@@ -214,7 +214,7 @@ class CalculateParams
     /**
      * @param float $width
      */
-    public function setWidth(float $width): void
+    public function setWidth($width)
     {
         $this->width = $width;
     }
@@ -222,7 +222,7 @@ class CalculateParams
     /**
      * @return float
      */
-    public function getDepth(): float
+    public function getDepth()
     {
         return $this->depth;
     }
@@ -230,7 +230,7 @@ class CalculateParams
     /**
      * @param float $depth
      */
-    public function setDepth(float $depth): void
+    public function setDepth($depth)
     {
         $this->depth = $depth;
     }
@@ -238,7 +238,7 @@ class CalculateParams
     /**
      * @return int
      */
-    public function getZip(): int
+    public function getZip()
     {
         return $this->zip;
     }
@@ -246,7 +246,7 @@ class CalculateParams
     /**
      * @param int $zip
      */
-    public function setZip(int $zip): void
+    public function setZip($zip)
     {
         $this->zip = $zip;
     }
@@ -254,7 +254,7 @@ class CalculateParams
     /**
      * @return bool
      */
-    public function isSuchr(): bool
+    public function isSuchr()
     {
         return $this->suchr;
     }
@@ -262,7 +262,7 @@ class CalculateParams
     /**
      * @param bool $suchr
      */
-    public function setSuchr(bool $suchr): void
+    public function setSuchr($suchr)
     {
         $this->suchr = $suchr;
     }
