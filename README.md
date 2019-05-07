@@ -32,7 +32,8 @@
 
 - 0.3.0 - Реализованы основные функции API [сервисов BoxBerry](https://api.boxberry.de/?act=info&sub=api_info_services);
 - 0.4.0 - Реализованы основные функции API [справка API](https://api.boxberry.de/?act=info&sub=api_info_lk);
-- 0.5.0 - Реализованы все функции API BoxBerry.
+- 0.5.0 - Реализованы все функции API BoxBerry;  
+- 0.5.1 - Понижена минимальная требуемая версия PHP до 5.5.  
 
 <a name="install"><h1>Установка</h1></a>  
 Для установки можно использовать менеджер пакетов Composer
