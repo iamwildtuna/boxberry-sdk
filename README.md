@@ -38,7 +38,7 @@
 <a name="install"><h1>Установка</h1></a>  
 Для установки можно использовать менеджер пакетов Composer
 
-    composer require iamwildtuna/boxberry-sdk
+    composer require wildtuna/boxberry-sdk
     
 <a name="settings"><h1>Настройка токенов</h1></a>  
 API клиент позволяет использовать несколько токенов и переключатсья между ними.  
