@@ -1,6 +1,6 @@
-[![Latest Stable Version](https://poser.pugx.org/iamwildtuna/boxberry-sdk/v/stable)](https://packagist.org/packages/iamwildtuna/boxberry-sdk)
-[![Total Downloads](https://poser.pugx.org/iamwildtuna/boxberry-sdk/downloads)](https://packagist.org/packages/iamwildtuna/boxberry-sdk)
-[![License](https://poser.pugx.org/iamwildtuna/boxberry-sdk/license)](https://packagist.org/packages/iamwildtuna/boxberry-sdk)
+[![Latest Stable Version](https://poser.pugx.org/wildtuna/boxberry-sdk/v/stable)](https://packagist.org/packages/wildtuna/boxberry-sdk)
+[![Total Downloads](https://poser.pugx.org/wildtuna/boxberry-sdk/downloads)](https://packagist.org/packages/wildtuna/boxberry-sdk)
+[![License](https://poser.pugx.org/wildtuna/boxberry-sdk/license)](https://packagist.org/packages/wildtuna/boxberry-sdk)
 [![Telegram Chat](https://img.shields.io/badge/telegram-chat-blue.svg?logo=telegram)](https://t.me/phpboxberrysdk)
 
 # Содержание      
