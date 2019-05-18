@@ -1,5 +1,5 @@
 {
-  "name": "iamwildtuna/boxberry-sdk",
+  "name": "wildtuna/boxberry-sdk",
   "description": "SDK для работы с API BoxBerry (api.boxberry.de)",
   "minimum-stability": "stable",
   "license": "MIT",
