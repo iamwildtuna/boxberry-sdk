@@ -3,6 +3,10 @@
 [![License](https://poser.pugx.org/wildtuna/boxberry-sdk/license)](https://packagist.org/packages/wildtuna/boxberry-sdk)
 [![Telegram Chat](https://img.shields.io/badge/telegram-chat-blue.svg?logo=telegram)](https://t.me/phpboxberrysdk)
 
+# SDK для [интеграции с программным комплексом Boxberry](https://api.boxberry.de/).  
+
+Посмотреть все проекты или поддержать автора можно [тут](https://lapay.group/opensource).  
+
 # Содержание      
 [Changelog](#changelog)  
 [Установка](#install)  
