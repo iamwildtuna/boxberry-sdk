@@ -10,8 +10,8 @@
 # Содержание      
 [Changelog](#changelog)  
 [Установка](#install)  
-[Настройка токенов](#settings) 
-[Отладка](#debugging)    
+[Настройка токенов](#settings)  
+[Отладка](#debugging)  
 [Создание заказа](#createOrder)  
 [Удаление заказа](#deleteOrder)  
 [Статусы заказа](#getOrderStatuses)  
