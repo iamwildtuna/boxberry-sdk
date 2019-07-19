@@ -10,7 +10,8 @@
 # Содержание      
 [Changelog](#changelog)  
 [Установка](#install)  
-[Настройка токенов](#settings)  
+[Настройка токенов](#settings) 
+[Отладка](#debugging)    
 [Создание заказа](#createOrder)  
 [Удаление заказа](#deleteOrder)  
 [Статусы заказа](#getOrderStatuses)  
@@ -62,6 +63,32 @@ $bbClient->setToken('another', 'another_bb_api_token');
 $bbClient->setCurrentToken('main');
 $bbClient->setCurrentToken('another');
 ````
+
+<a name="debugging"><h1>Отладка</h1></a>  
+Для логирования запросов и ответов используется [стандартный PSR-3 логгер](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md). 
+Ниже приведен пример логирования используя [Monolog](https://github.com/Seldaek/monolog).  
+
+```php
+<?php
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
+    
+    $log = new Logger('name');
+    $log->pushHandler(new StreamHandler('log.txt', Logger::INFO));
+    
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'token');
+    $bbClient->setCurrentToken('main');
+    $bbClient->setLogger($log);
+    $result = $bbClient->getCityList();
+    
+```  
+
+В log.txt будут следующие строки:
+```
+[2019-07-19 13:09:58] name.INFO: BoxBerry API request: token=TOKEN&method=ListCities [] []
+[2019-07-19 13:09:58] name.INFO: BoxBerry API response: [{"Code":"172","Name":"\u0413\u0435\u043b\u0435\u043d\u0434\u0436\u0438\u043a","ReceptionLaP":"1","DeliveryLaP":"1","Reception":"1","ForeignReceptionReturns":"1","Terminal":"1","Kladr":"2300000300000","Region":"\u041a\u0440\u0430\u0441\u043d\u043e\u0434\u0430\u0440\u0441\u043a\u0438\u0439","CountryCode":"643",.......
+``` 
 
 <a name="createOrder"><h1>Создание заказа</h1></a>  
 Создание нового заказа в ЛК BB. Заказы бывают двух видов, до ПВЗ и курьерская доставка до двери.

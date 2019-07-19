@@ -7,16 +7,19 @@ use WildTuna\BoxberrySdk\Entity\Intake;
 use WildTuna\BoxberrySdk\Entity\Order;
 use WildTuna\BoxberrySdk\Entity\TariffInfo;
 use WildTuna\BoxberrySdk\Exception\BoxBerryException;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-class Client
+class Client implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /** @var array  */
     private $tokenList = [];
     /** @var null  */
     private $currentToken = null;
     /** @var \GuzzleHttp\Client|null */
     private $httpClient = null;
-
 
     /**
      * Client constructor.
@@ -28,7 +31,6 @@ class Client
             'base_uri' => 'http://api.boxberry.de/json.php',
             'timeout' => $timeout,
         ]);
-
     }
 
     /**
@@ -54,7 +56,6 @@ class Client
         $this->setCurrentToken($key);
     }
 
-
     /**
      * Задает токен, который будет использован клиентом для запросов к API
      *
@@ -75,7 +76,6 @@ class Client
 
         return $this->currentToken;
     }
-
 
     /**
      * Инициализирует вызов к API
@@ -99,27 +99,39 @@ class Client
 
         switch ($type) {
             case 'GET':
+                if ($this->logger) {
+                    $this->logger->info('BoxBerry API request: '.http_build_query($params));
+                }
                 $response = $this->httpClient->get('', ['query' => $params]);
                 break;
             case 'POST':
+                if ($this->logger) {
+                    $this->logger->info('BoxBerry API request: '.json_encode($params));
+                }
                 $response = $this->httpClient->post('', ['form_params' => $params]);
                 break;
         }
 
-        if ($response->getStatusCode() != 200)
-            throw new BoxBerryException('Неверный код ответа от сервера BoxBerry при вызове метода '.$method.': ' . $response->getStatusCode(), $response->getStatusCode(), $response->getBody()->getContents());
+        $json = $response->getBody()->getContents();
 
-        $respBB = json_decode($response->getBody()->getContents(), true);
+        if ($this->logger) {
+            $this->logger->info('BoxBerry API response: '.$json);
+        }
+
+        if ($response->getStatusCode() != 200)
+            throw new BoxBerryException('Неверный код ответа от сервера BoxBerry при вызове метода '.$method.': ' . $response->getStatusCode(), $response->getStatusCode(), $json);
+
+        $respBB = json_decode($json, true);
 
         if (empty($respBB))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' пришел пустой ответ', $response->getStatusCode(), $response->getBody()->getContents());
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' пришел пустой ответ', $response->getStatusCode(), $json);
 
         if (!empty($respBB['err']))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB['err'], $response->getStatusCode(), $response->getBody()->getContents());
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB['err'], $response->getStatusCode(), $json);
 
 
         if (!empty($respBB[0]['err']))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB[0]['err'], $response->getStatusCode(), $response->getBody()->getContents());
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB[0]['err'], $response->getStatusCode(), $json);
 
         return $respBB;
     }
