@@ -1,3 +1,8 @@
+<a href="https://lapay.group/"><img align="left" width="200" src="https://lapay.group/lglogo.jpg"></a>
+<a href="https://boxberry.ru/business_solutions/it_solutions/1089980/"><img align="right" width="200" src="https://lapay.group/bblogo.svg"></a>    
+
+<br /><br /><br />
+
 [![Latest Stable Version](https://poser.pugx.org/wildtuna/boxberry-sdk/v/stable)](https://packagist.org/packages/wildtuna/boxberry-sdk)
 [![Total Downloads](https://poser.pugx.org/wildtuna/boxberry-sdk/downloads)](https://packagist.org/packages/wildtuna/boxberry-sdk)
 [![License](https://poser.pugx.org/wildtuna/boxberry-sdk/license)](https://packagist.org/packages/wildtuna/boxberry-sdk)

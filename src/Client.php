@@ -100,38 +100,42 @@ class Client implements LoggerAwareInterface
         switch ($type) {
             case 'GET':
                 if ($this->logger) {
-                    $this->logger->info('BoxBerry API request: '.http_build_query($params));
+                    $this->logger->info("BoxBerry {$type} API request {$method}: ".http_build_query($params));
                 }
                 $response = $this->httpClient->get('', ['query' => $params]);
                 break;
             case 'POST':
                 if ($this->logger) {
-                    $this->logger->info('BoxBerry API request: '.json_encode($params));
+                    $this->logger->info("BoxBerry API {$type} request {$method}: ".json_encode($params));
                 }
                 $response = $this->httpClient->post('', ['form_params' => $params]);
                 break;
         }
 
+        $request = http_build_query($params);
+
         $json = $response->getBody()->getContents();
 
         if ($this->logger) {
-            $this->logger->info('BoxBerry API response: '.$json);
+            $headers = $response->getHeaders();
+            $headers['http_status'] = $response->getStatusCode();
+            $this->logger->info("BoxBerry API response {$method}: ".$json, $headers);
         }
 
         if ($response->getStatusCode() != 200)
-            throw new BoxBerryException('Неверный код ответа от сервера BoxBerry при вызове метода '.$method.': ' . $response->getStatusCode(), $response->getStatusCode(), $json);
+            throw new BoxBerryException('Неверный код ответа от сервера BoxBerry при вызове метода '.$method.': ' . $response->getStatusCode(), $response->getStatusCode(), $json, $request);
 
         $respBB = json_decode($json, true);
 
         if (empty($respBB))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' пришел пустой ответ', $response->getStatusCode(), $json);
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' пришел пустой ответ', $response->getStatusCode(), $json, $request);
 
         if (!empty($respBB['err']))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB['err'], $response->getStatusCode(), $json);
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB['err'], $response->getStatusCode(), $json, $request);
 
 
         if (!empty($respBB[0]['err']))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB[0]['err'], $response->getStatusCode(), $json);
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB[0]['err'], $response->getStatusCode(), $json, $request);
 
         return $respBB;
     }
