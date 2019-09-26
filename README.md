@@ -10,7 +10,21 @@
 
 # SDK для [интеграции с программным комплексом Boxberry](https://api.boxberry.de/).  
 
-Посмотреть все проекты или поддержать автора можно [тут](https://lapay.group/opensource).  
+Посмотреть все проекты или поддержать автора можно [тут](https://lapay.group/opensource).   
+
+Обратите внимание, что теперь у BoxBerry несколько API адресов:  
+ - https://api.boxberry.de/json.php - для старых клиентов;  
+ - https://api.boxberry.ru/json.php - для новый клиентов;  
+ - https://account.boxberry.ru/json.php - для новых клиентов.  
+
+По умолчанию API выбирает api.boxberry.de, для смены адреса необходимо при инициализации клиента вторым параметром передать нужный адрес.  
+
+**Пример:**   
+```php
+<?php
+$bbClient = new \WildTuna\BoxberrySdk\Client(120, 'https://api.boxberry.ru/json.php');
+$bbClient->setToken('main', 'bb_api_token');
+```
 
 # Содержание      
 [Changelog](#changelog)  
@@ -45,7 +59,8 @@
 - 0.5.0 - Реализованы все функции API BoxBerry;  
 - 0.5.1 - Понижена минимальная требуемая версия PHP до 5.5;  
 - 0.6.0 - Добавлено логирование запросов и ответов к API;  
-- 0.6.1 - Доработка логирования.  
+- 0.6.1 - Доработка логирования;  
+- 0.6.2 - Поддержка разных адресов API.  
 
 <a name="install"><h1>Установка</h1></a>  
 Для установки можно использовать менеджер пакетов Composer

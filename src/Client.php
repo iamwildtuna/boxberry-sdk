@@ -24,12 +24,13 @@ class Client implements LoggerAwareInterface
     /**
      * Client constructor.
      * @param int $timeout - таймаут ожидания ответа от серверов BoxBerry в секундах
+     * @param string $api_uri - адрес API, так как теперь у BB их несколько
      */
-    public function __construct($timeout = 300)
+    public function __construct($timeout = 300, $api_uri = 'https://api.boxberry.de/json.php')
     {
         $this->httpClient = new \GuzzleHttp\Client([
-            'base_uri' => 'http://api.boxberry.de/json.php',
-            'timeout' => $timeout,
+            'base_uri' => $api_uri,
+            'timeout' => $timeout
         ]);
     }
 
@@ -413,7 +414,7 @@ class Client implements LoggerAwareInterface
         if (empty($track_nums) || !is_array($track_nums))
             throw new \InvalidArgumentException('Не передан массив трек-номеров заказов!');
 
-        return $this-$this->callApi('GET', 'ParselSend', ['ImIds' => implode(',', $track_nums)]);
+        return $this->callApi('GET', 'ParselSend', ['ImIds' => implode(',', $track_nums)]);
     }
 
     /**
