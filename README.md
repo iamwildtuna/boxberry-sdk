@@ -119,7 +119,7 @@ $bbClient->setCurrentToken('another');
 Подробнее можно [прочитать тут](https://api.boxberry.de/?act=info&sub=api_info_lk), функция ParselCreate.    
   
 **Входные параметры:**  
-Объект *\WildTuna\BoxberrySdk\Entity\CalculateParams*
+Объект *\WildTuna\BoxberrySdk\Entity\Order*
 
 **Выходные параметры:**  
 Ассоциативный массив данных
@@ -205,6 +205,7 @@ try {
     $russianPostParams->setWidth(10);
     $russianPostParams->setHeight(10);
     
+    $order->setRussianPostParams($russianPostParams);
     $result = $bbClient->createOrder($order);
     
     /*
