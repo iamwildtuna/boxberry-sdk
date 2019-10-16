@@ -3,6 +3,16 @@ namespace WildTuna\BoxberrySdk\Entity;
 
 class Order
 {
+    // Типы выдачи заказа получателю (TOI_*)
+    const TOI_DELIVERY_WITHOUT_OPENING = 0; // выдача без вскрытия
+    const TOI_DELIVERY_WITH_OPENING_AND_VERIFICATION = 1; // выдача со вскрытием и проверкой комплектности
+    const TOI_PARTIAL_ISSUE = 2; // выдача части вложения
+
+    // Виды доставки (vid)
+    const PVZ = 1; // Доставка до пункта выдачи (ПВЗ)
+    const COURIER = 2; // Курьерская доставка (КД)
+    const RUSSIAN_POST = 3; // Доставка Почтой России (ПР)
+
     /**
      * Трекинг-код ранее созданной посылки
      * @var string
@@ -97,6 +107,24 @@ class Order
      */
     private $comment = '';
 
+    /**
+     * Вид выдачи
+     * @var int
+     */
+    private $issue = null;
+
+    /**
+     * Наименование магазина отправителя для sms/e-mail оповещений и внутренней маркировки Boxberry
+     * @var string
+     */
+    private $sender_name = null;
+
+    /**
+     * Параметры для отправления Почтой России (vid = 3)
+     * @var RussianPostParams
+     */
+    private $russian_post_params = null;
+
     public function asArr()
     {
         $params = [];
@@ -137,14 +165,25 @@ class Order
         $kurdost['timep'] = $this->customer->getDeliveryTime();
         $kurdost['delivery_date'] = $this->delivery_date;
         $kurdost['comentk'] = $this->comment;
+
+        // Доп. параметры для Почты России
+        if (!empty($this->russian_post_params)) {
+            $kurdost['type'] = $this->russian_post_params->getType();
+            $kurdost['fragile'] = (string)($this->russian_post_params->isFragile()) ? '1' : '0';
+            $kurdost['strong'] = (string)($this->russian_post_params->isStrong()) ? '1' : '0';
+            $kurdost['optimize'] = (string)($this->russian_post_params->isOptimize()) ? '1' : '0';
+            $kurdost['packing_type'] = $this->russian_post_params->getPackingType();
+            $kurdost['packing_strict'] = $this->russian_post_params->isPackingStrict();
+        }
+
         $params['kurdost'] = $kurdost;
 
 
         if (empty($this->places))
             throw new \InvalidArgumentException('В заказе не заполнена информация о местах!');
 
-        if (count($this->places) > 5)
-            throw new \InvalidArgumentException('В заказе не может быть больше 5 мест!');
+        /*if (count($this->places) > 5)
+            throw new \InvalidArgumentException('В заказе не может быть больше 5 мест!');*/
 
         $weights = [];
         /**
@@ -161,6 +200,13 @@ class Order
             $weights['barcode'.$num] = $place->getBarcode();
         }
         $params['weights'] = $weights;
+
+        // Габариты места для Почты России
+        if (!empty($this->russian_post_params)) {
+            $params['weights']['x'] = $this->russian_post_params->getWidth();
+            $params['weights']['y'] = $this->russian_post_params->getHeight();
+            $params['weights']['z'] = $this->russian_post_params->getLength();
+        }
 
         if (empty($this->items))
             throw new \InvalidArgumentException('В заказе не заполнены товары!');
@@ -180,6 +226,8 @@ class Order
         }
 
         $params['items'] = $items;
+        $params['issue'] = $this->issue;
+        $params['sender_name'] = $this->sender_name;
 
         return $params;
     }
@@ -422,5 +470,37 @@ class Order
     public function setComment($comment)
     {
         $this->comment = $comment;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIssue()
+    {
+        return $this->issue;
+    }
+
+    /**
+     * @param int $issue
+     */
+    public function setIssue($issue)
+    {
+        $this->issue = $issue;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSenderName()
+    {
+        return $this->sender_name;
+    }
+
+    /**
+     * @param string $sender_name
+     */
+    public function setSenderName($sender_name)
+    {
+        $this->sender_name = $sender_name;
     }
 }

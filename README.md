@@ -140,10 +140,10 @@ try {
     $order->setPaymentAmount(1300); // Сумма к оплате
     $order->setDeliveryAmount(300); // Стоимость доставки
     $order->setComment('Тестовый заказ'); // Комментарий к заказу
-    // $order->setVid(1); // Тип доставки (1 - ПВЗ, 2 - КД)
+    // $order->setVid(\WildTuna\BoxberrySdk\Entity\Order::PVZ); // Тип доставки (1 - ПВЗ, 2 - КД, 3 - Почта России)
     // $order->setPvzCode(61831); // Код ПВЗ
     // $order->setPointOfEntry('010'); // Код пункта поступления
-    $order->setVid(2); // Тип доставки (1 - ПВЗ, 2 - КД)
+    $order->setVid(\WildTuna\BoxberrySdk\Entity\Order::COURIER); // Тип доставки (1 - ПВЗ, 2 - КД, 3 - Почта России)
     
     $customer = new \WildTuna\BoxberrySdk\Entity\Customer();
     $customer->setFio('Иванов Петр Николаевич'); // ФИО получателя
@@ -187,6 +187,23 @@ try {
     $item->setVat(20); // Ставка НДС
     $item->setUnit('шт'); // Единица измерения
     $order->setItems($item);
+    $order->setSenderName('ООО Ромашка'); // Наименование отправителя
+    $order->setIssue(\WildTuna\BoxberrySdk\Entity\Order::TOI_DELIVERY_WITH_OPENING_AND_VERIFICATION); // вид выдачи (см. константы класса)
+
+    // Для отправления Почтой России необходимо заполнить дополнительные параметры
+    $russianPostParams = new \WildTuna\BoxberrySdk\Entity\RussianPostParams();
+    $russianPostParams->setType(\WildTuna\BoxberrySdk\Entity\RussianPostParams::PT_POSILKA); // Тип отправления (см. константы класса)
+    $russianPostParams->setFragile(true); // Хрупкая посылка
+    $russianPostParams->setStrong(true); // Строгий тип
+    $russianPostParams->setOptimize(true); // Оптимизация тарифа
+    $russianPostParams->setPackingType(\WildTuna\BoxberrySdk\Entity\RussianPostParams::PACKAGE_IM_MORE_160); // Тип упаковки (см. константы класса)
+    $russianPostParams->setPackingStrict(false); // Строгая упаковка
+
+    // Габариты тарного места (см) Обязательны для доставки Почтой России.
+    $russianPostParams->setLength(10); 
+    $russianPostParams->setWidth(10);
+    $russianPostParams->setHeight(10);
+    
     $result = $bbClient->createOrder($order);
     
     /*
