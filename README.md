@@ -60,7 +60,8 @@ $bbClient->setToken('main', 'bb_api_token');
 - 0.5.1 - Понижена минимальная требуемая версия PHP до 5.5;  
 - 0.6.0 - Добавлено логирование запросов и ответов к API;  
 - 0.6.1 - Доработка логирования;  
-- 0.6.2 - Поддержка разных адресов API.  
+- 0.6.2 - Поддержка разных адресов API;  
+- 0.7.0 - Описание можно посмотреть [тут](https://github.com/iamwildtuna/boxberry-sdk/releases/tag/0.7.0).  
 
 <a name="install"><h1>Установка</h1></a>  
 Для установки можно использовать менеджер пакетов Composer
@@ -118,7 +119,7 @@ $bbClient->setCurrentToken('another');
 Подробнее можно [прочитать тут](https://api.boxberry.de/?act=info&sub=api_info_lk), функция ParselCreate.    
   
 **Входные параметры:**  
-Объект *\WildTuna\BoxberrySdk\Entity\CalculateParams*
+Объект *\WildTuna\BoxberrySdk\Entity\Order*
 
 **Выходные параметры:**  
 Ассоциативный массив данных
@@ -204,6 +205,7 @@ try {
     $russianPostParams->setWidth(10);
     $russianPostParams->setHeight(10);
     
+    $order->setRussianPostParams($russianPostParams);
     $result = $bbClient->createOrder($order);
     
     /*
