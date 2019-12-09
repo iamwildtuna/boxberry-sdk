@@ -41,7 +41,7 @@ class TariffInfo
     /**
      * @return float
      */
-    public function getPrice(): float
+    public function getPrice()
     {
         return $this->price;
     }
@@ -49,7 +49,7 @@ class TariffInfo
     /**
      * @param float $price
      */
-    public function setPrice(float $price): void
+    public function setPrice($price)
     {
         $this->price = $price;
     }
@@ -57,7 +57,7 @@ class TariffInfo
     /**
      * @return float
      */
-    public function getPriceBase(): float
+    public function getPriceBase()
     {
         return $this->price_base;
     }
@@ -65,7 +65,7 @@ class TariffInfo
     /**
      * @param float $price_base
      */
-    public function setPriceBase(float $price_base): void
+    public function setPriceBase($price_base)
     {
         $this->price_base = $price_base;
     }
@@ -73,7 +73,7 @@ class TariffInfo
     /**
      * @return float
      */
-    public function getPriceService(): float
+    public function getPriceService()
     {
         return $this->price_service;
     }
@@ -81,7 +81,7 @@ class TariffInfo
     /**
      * @param float $price_service
      */
-    public function setPriceService(float $price_service): void
+    public function setPriceService($price_service)
     {
         $this->price_service = $price_service;
     }
@@ -89,7 +89,7 @@ class TariffInfo
     /**
      * @return string
      */
-    public function getDeliveryPeriod(): string
+    public function getDeliveryPeriod()
     {
         return $this->delivery_period;
     }
@@ -97,7 +97,7 @@ class TariffInfo
     /**
      * @param string $delivery_period
      */
-    public function setDeliveryPeriod(string $delivery_period): void
+    public function setDeliveryPeriod($delivery_period)
     {
         $this->delivery_period = $delivery_period;
     }

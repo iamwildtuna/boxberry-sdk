@@ -138,7 +138,7 @@ class Intake
     /**
      * @param int $zip
      */
-    public function setZip(int $zip)
+    public function setZip($zip)
     {
         $this->zip = $zip;
     }
@@ -146,7 +146,7 @@ class Intake
     /**
      * @return string
      */
-    public function getCity(): string
+    public function getCity()
     {
         return $this->city;
     }
@@ -154,7 +154,7 @@ class Intake
     /**
      * @param string $city
      */
-    public function setCity(string $city)
+    public function setCity($city)
     {
         $this->city = $city;
     }
@@ -162,7 +162,7 @@ class Intake
     /**
      * @return string
      */
-    public function getStreet(): string
+    public function getStreet()
     {
         return $this->street;
     }
@@ -170,7 +170,7 @@ class Intake
     /**
      * @param string $street
      */
-    public function setStreet(string $street)
+    public function setStreet( $street)
     {
         $this->street = $street;
     }
@@ -178,7 +178,7 @@ class Intake
     /**
      * @return string
      */
-    public function getHouse(): string
+    public function getHouse()
     {
         return $this->house;
     }
@@ -186,7 +186,7 @@ class Intake
     /**
      * @param string $house
      */
-    public function setHouse(string $house)
+    public function setHouse($house)
     {
         $this->house = $house;
     }
@@ -194,7 +194,7 @@ class Intake
     /**
      * @return string
      */
-    public function getBuilding(): string
+    public function getBuilding()
     {
         return $this->building;
     }
@@ -202,7 +202,7 @@ class Intake
     /**
      * @param string $building
      */
-    public function setBuilding(string $building)
+    public function setBuilding($building)
     {
         $this->building = $building;
     }
@@ -210,7 +210,7 @@ class Intake
     /**
      * @return string
      */
-    public function getCorpus(): string
+    public function getCorpus()
     {
         return $this->corpus;
     }
@@ -218,7 +218,7 @@ class Intake
     /**
      * @param string $corpus
      */
-    public function setCorpus(string $corpus)
+    public function setCorpus($corpus)
     {
         $this->corpus = $corpus;
     }
@@ -226,7 +226,7 @@ class Intake
     /**
      * @return string
      */
-    public function getFlat(): string
+    public function getFlat()
     {
         return $this->flat;
     }
@@ -234,7 +234,7 @@ class Intake
     /**
      * @param string $flat
      */
-    public function setFlat(string $flat)
+    public function setFlat($flat)
     {
         $this->flat = $flat;
     }
@@ -242,7 +242,7 @@ class Intake
     /**
      * @return string
      */
-    public function getContactPerson(): string
+    public function getContactPerson()
     {
         return $this->contact_person;
     }
@@ -250,7 +250,7 @@ class Intake
     /**
      * @param string $contact_person
      */
-    public function setContactPerson(string $contact_person)
+    public function setContactPerson($contact_person)
     {
         $this->contact_person = $contact_person;
     }
@@ -258,7 +258,7 @@ class Intake
     /**
      * @return string
      */
-    public function getContactPhone(): string
+    public function getContactPhone()
     {
         return $this->contact_phone;
     }
@@ -266,7 +266,7 @@ class Intake
     /**
      * @param string $contact_phone
      */
-    public function setContactPhone(string $contact_phone)
+    public function setContactPhone($contact_phone)
     {
         $this->contact_phone = $contact_phone;
     }
@@ -274,7 +274,7 @@ class Intake
     /**
      * @return string
      */
-    public function getTakingDate(): string
+    public function getTakingDate()
     {
         return $this->taking_date;
     }
@@ -282,7 +282,7 @@ class Intake
     /**
      * @param string $taking_date
      */
-    public function setTakingDate(string $taking_date)
+    public function setTakingDate($taking_date)
     {
         $this->taking_date = $taking_date;
     }
@@ -290,7 +290,7 @@ class Intake
     /**
      * @return string
      */
-    public function getTakingTimeFrom(): string
+    public function getTakingTimeFrom()
     {
         return $this->taking_time_from;
     }
@@ -298,7 +298,7 @@ class Intake
     /**
      * @param string $taking_time_from
      */
-    public function setTakingTimeFrom(string $taking_time_from)
+    public function setTakingTimeFrom($taking_time_from)
     {
         $this->taking_time_from = $taking_time_from;
     }
@@ -306,7 +306,7 @@ class Intake
     /**
      * @return string
      */
-    public function getTakingTimeTo(): string
+    public function getTakingTimeTo()
     {
         return $this->taking_time_to;
     }
@@ -314,7 +314,7 @@ class Intake
     /**
      * @param string $taking_time_to
      */
-    public function setTakingTimeTo(string $taking_time_to)
+    public function setTakingTimeTo($taking_time_to)
     {
         $this->taking_time_to = $taking_time_to;
     }
@@ -322,7 +322,7 @@ class Intake
     /**
      * @return int
      */
-    public function getPlaces(): int
+    public function getPlaces()
     {
         return $this->places;
     }
@@ -330,7 +330,7 @@ class Intake
     /**
      * @param int $places
      */
-    public function setPlaces(int $places)
+    public function setPlaces($places)
     {
         $this->places = $places;
     }
@@ -338,7 +338,7 @@ class Intake
     /**
      * @return float
      */
-    public function getVolume(): float
+    public function getVolume()
     {
         return $this->volume;
     }
@@ -346,7 +346,7 @@ class Intake
     /**
      * @param float $volume
      */
-    public function setVolume(float $volume)
+    public function setVolume($volume)
     {
         $this->volume = $volume;
     }
@@ -354,7 +354,7 @@ class Intake
     /**
      * @return float
      */
-    public function getWeight(): float
+    public function getWeight()
     {
         return $this->weight;
     }
@@ -362,7 +362,7 @@ class Intake
     /**
      * @param float $weight
      */
-    public function setWeight(float $weight)
+    public function setWeight($weight)
     {
         $this->weight = $weight;
     }
@@ -370,7 +370,7 @@ class Intake
     /**
      * @return string
      */
-    public function getComment(): string
+    public function getComment()
     {
         return $this->comment;
     }
@@ -378,7 +378,7 @@ class Intake
     /**
      * @param string $comment
      */
-    public function setComment(string $comment)
+    public function setComment($comment)
     {
         $this->comment = $comment;
     }

@@ -13,12 +13,12 @@ class Place
      * Штрих-код места
      * @var string
      */
-    private $barcode = null;
+    private $barcode = '';
 
     /**
      * @return int
      */
-    public function getWeight(): int
+    public function getWeight()
     {
         return $this->weight;
     }
@@ -26,7 +26,7 @@ class Place
     /**
      * @param int $weight
      */
-    public function setWeight(int $weight): void
+    public function setWeight($weight)
     {
         $this->weight = $weight;
     }
@@ -34,7 +34,7 @@ class Place
     /**
      * @return string
      */
-    public function getBarcode(): string
+    public function getBarcode()
     {
         return $this->barcode;
     }
@@ -42,7 +42,7 @@ class Place
     /**
      * @param string $barcode
      */
-    public function setBarcode(string $barcode): void
+    public function setBarcode($barcode)
     {
         $this->barcode = $barcode;
     }

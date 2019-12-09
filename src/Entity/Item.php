@@ -42,7 +42,7 @@ class Item
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -50,7 +50,7 @@ class Item
     /**
      * @param int $id
      */
-    public function setId(int $id): void
+    public function setId($id)
     {
         $this->id = $id;
     }
@@ -58,7 +58,7 @@ class Item
     /**
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -66,7 +66,7 @@ class Item
     /**
      * @param string $name
      */
-    public function setName(string $name): void
+    public function setName($name)
     {
         $this->name = $name;
     }
@@ -74,7 +74,7 @@ class Item
     /**
      * @return string
      */
-    public function getUnit(): string
+    public function getUnit()
     {
         return $this->unit;
     }
@@ -82,7 +82,7 @@ class Item
     /**
      * @param string $unit
      */
-    public function setUnit(string $unit): void
+    public function setUnit($unit)
     {
         $this->unit = $unit;
     }
@@ -90,7 +90,7 @@ class Item
     /**
      * @return int
      */
-    public function getVat(): int
+    public function getVat()
     {
         return $this->vat;
     }
@@ -98,7 +98,7 @@ class Item
     /**
      * @param int $vat
      */
-    public function setVat(int $vat): void
+    public function setVat($vat)
     {
         $this->vat = $vat;
     }
@@ -106,7 +106,7 @@ class Item
     /**
      * @return int
      */
-    public function getAmount(): int
+    public function getAmount()
     {
         return $this->amount;
     }
@@ -114,7 +114,7 @@ class Item
     /**
      * @param int $amount
      */
-    public function setAmount(int $amount): void
+    public function setAmount($amount)
     {
         $this->amount = $amount;
     }
@@ -122,7 +122,7 @@ class Item
     /**
      * @return int
      */
-    public function getQuantity(): int
+    public function getQuantity()
     {
         return $this->quantity;
     }
@@ -130,7 +130,7 @@ class Item
     /**
      * @param int $quantity
      */
-    public function setQuantity(int $quantity): void
+    public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
     }

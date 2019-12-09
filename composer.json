@@ -1,6 +1,6 @@
 {
   "name": "wildtuna/boxberry-sdk",
-  "description": "SDK для работы с API BoxBerry (api.boxberry.de)",
+  "description": "SDK для работы с API BoxBerry (api.boxberry.ru)",
   "minimum-stability": "stable",
   "license": "MIT",
   "support": {
