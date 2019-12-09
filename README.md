@@ -61,7 +61,8 @@ $bbClient->setToken('main', 'bb_api_token');
 - 0.6.0 - Добавлено логирование запросов и ответов к API;  
 - 0.6.1 - Доработка логирования;  
 - 0.6.2 - Поддержка разных адресов API;  
-- 0.7.0 - Описание можно посмотреть [тут](https://github.com/iamwildtuna/boxberry-sdk/releases/tag/0.7.0).  
+- 0.7.0 - Описание можно посмотреть [тут](https://github.com/iamwildtuna/boxberry-sdk/releases/tag/0.7.0);  
+- 0.7.1 - Исправлена поломанная совместимость с PHP 5.5/5.6.  
 
 <a name="install"><h1>Установка</h1></a>  
 Для установки можно использовать менеджер пакетов Composer
