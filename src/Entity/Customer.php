@@ -285,7 +285,7 @@ class Customer
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getOrgBankBik()
     {
@@ -293,7 +293,7 @@ class Customer
     }
 
     /**
-     * @param int $org_bank_bik
+     * @param string $org_bank_bik
      */
     public function setOrgBankBik($org_bank_bik)
     {
