@@ -66,7 +66,7 @@ class Customer
 
     /**
      * БИК банка
-     * @var int
+     * @var string
      */
     private $org_bank_bik = null;
 
