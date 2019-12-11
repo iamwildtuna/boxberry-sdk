@@ -14,9 +14,9 @@ class Client implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /** @var array  */
+    /** @var array */
     private $tokenList = [];
-    /** @var null  */
+    /** @var null */
     private $currentToken = null;
     /** @var \GuzzleHttp\Client|null */
     private $httpClient = null;
@@ -48,8 +48,8 @@ class Client implements LoggerAwareInterface
     /**
      * Заносит токен в хранилище
      *
-     * @param string $key  - Ключ токена
-     * @param string$token - Токен доступа к API
+     * @param string $key - Ключ токена
+     * @param string $token - Токен доступа к API
      */
     public function setToken($key, $token)
     {
@@ -81,8 +81,9 @@ class Client implements LoggerAwareInterface
     /**
      * Инициализирует вызов к API
      *
+     * @param $type
      * @param $method
-     * @param $params
+     * @param array $params
      * @return array
      * @throws BoxBerryException
      */
@@ -101,13 +102,13 @@ class Client implements LoggerAwareInterface
         switch ($type) {
             case 'GET':
                 if ($this->logger) {
-                    $this->logger->info("BoxBerry {$type} API request {$method}: ".http_build_query($params));
+                    $this->logger->info("BoxBerry {$type} API request {$method}: " . http_build_query($params));
                 }
                 $response = $this->httpClient->get('', ['query' => $params]);
                 break;
             case 'POST':
                 if ($this->logger) {
-                    $this->logger->info("BoxBerry API {$type} request {$method}: ".json_encode($params));
+                    $this->logger->info("BoxBerry API {$type} request {$method}: " . json_encode($params));
                 }
                 $response = $this->httpClient->post('', ['form_params' => $params]);
                 break;
@@ -120,23 +121,23 @@ class Client implements LoggerAwareInterface
         if ($this->logger) {
             $headers = $response->getHeaders();
             $headers['http_status'] = $response->getStatusCode();
-            $this->logger->info("BoxBerry API response {$method}: ".$json, $headers);
+            $this->logger->info("BoxBerry API response {$method}: " . $json, $headers);
         }
 
         if ($response->getStatusCode() != 200)
-            throw new BoxBerryException('Неверный код ответа от сервера BoxBerry при вызове метода '.$method.': ' . $response->getStatusCode(), $response->getStatusCode(), $json, $request);
+            throw new BoxBerryException('Неверный код ответа от сервера BoxBerry при вызове метода ' . $method . ': ' . $response->getStatusCode(), $response->getStatusCode(), $json, $request);
 
         $respBB = json_decode($json, true);
 
         if (empty($respBB))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' пришел пустой ответ', $response->getStatusCode(), $json, $request);
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода ' . $method . ' пришел пустой ответ', $response->getStatusCode(), $json, $request);
 
         if (!empty($respBB['err']))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB['err'], $response->getStatusCode(), $json, $request);
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода ' . $method . ' получена ошибка: ' . $respBB['err'], $response->getStatusCode(), $json, $request);
 
 
         if (!empty($respBB[0]['err']))
-            throw new BoxBerryException('От сервера BoxBerry при вызове метода '.$method.' получена ошибка: '.$respBB[0]['err'], $response->getStatusCode(), $json, $request);
+            throw new BoxBerryException('От сервера BoxBerry при вызове метода ' . $method . ' получена ошибка: ' . $respBB[0]['err'], $response->getStatusCode(), $json, $request);
 
         return $respBB;
     }
@@ -147,6 +148,7 @@ class Client implements LoggerAwareInterface
      * @param boolean $prepaid true - все ПВЗ, false - с возможностью оплаты при получении
      * @param boolean $short - true - краткая информация о ПВЗ с датой последнего изменения
      * @param int $city_code - код города BB, если нужны ПВЗ в заданном городе
+     * @return array
      * @throws BoxBerryException
      */
     public function getPvzList($prepaid = false, $short = false, $city_code = null)
@@ -273,7 +275,7 @@ class Client implements LoggerAwareInterface
      */
     public function pointDetails($point_id, $photo = false)
     {
-        if ($photo) $photo = 1 ; else $photo = 0;
+        if ($photo) $photo = 1; else $photo = 0;
 
         return $this->callApi('GET', 'PointsDescription', ['code' => $point_id, 'photo' => $photo]);
     }

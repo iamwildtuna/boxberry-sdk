@@ -1,4 +1,5 @@
 <?php
+
 namespace WildTuna\BoxberrySdk\Entity;
 
 class Order
@@ -196,8 +197,8 @@ class Order
                 $num = '';
             }
 
-            $weights['weight'.$num] = $place->getWeight();
-            $weights['barcode'.$num] = $place->getBarcode();
+            $weights['weight' . $num] = $place->getWeight();
+            $weights['barcode' . $num] = $place->getBarcode();
         }
         $params['weights'] = $weights;
 
