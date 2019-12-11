@@ -293,7 +293,7 @@ class Customer
     }
 
     /**
-     * @param $org_bank_bik
+     * @param int $org_bank_bik
      */
     public function setOrgBankBik($org_bank_bik)
     {
