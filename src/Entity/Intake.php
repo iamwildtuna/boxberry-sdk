@@ -1,4 +1,5 @@
 <?php
+
 namespace WildTuna\BoxberrySdk\Entity;
 
 class Intake
@@ -130,7 +131,7 @@ class Intake
     /**
      * @return int
      */
-    public function getZip(): int
+    public function getZip()
     {
         return $this->zip;
     }
@@ -170,7 +171,7 @@ class Intake
     /**
      * @param string $street
      */
-    public function setStreet( $street)
+    public function setStreet($street)
     {
         $this->street = $street;
     }

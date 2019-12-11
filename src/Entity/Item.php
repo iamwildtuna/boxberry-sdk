@@ -1,4 +1,5 @@
 <?php
+
 namespace WildTuna\BoxberrySdk\Entity;
 
 class Item

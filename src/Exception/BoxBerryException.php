@@ -12,7 +12,7 @@ class BoxBerryException extends \Exception
     /**
      * @var string
      */
-    private $raw_request  = null;
+    private $raw_request = null;
 
     public function __construct($message = "", $code = 0, $raw_response = null, $raw_request = null, $previous = null)
     {

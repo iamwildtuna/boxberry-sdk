@@ -1,4 +1,5 @@
 <?php
+
 namespace WildTuna\BoxberrySdk\Entity;
 
 class Customer
@@ -292,7 +293,7 @@ class Customer
     }
 
     /**
-     * @param int $org_bik
+     * @param $org_bank_bik
      */
     public function setOrgBankBik($org_bank_bik)
     {
