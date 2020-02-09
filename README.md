@@ -10,7 +10,7 @@
 
 # SDK для [интеграции с программным комплексом Boxberry](https://api.boxberry.de/).  
 
-Посмотреть все проекты или поддержать автора можно [тут](https://lapay.group/opensource).   
+Посмотреть все проекты или подарить автору кофе можно [тут](https://lapay.group/opensource).    
 
 Обратите внимание, что теперь у BoxBerry несколько API адресов:  
  - https://api.boxberry.de/json.php - для старых клиентов;  
