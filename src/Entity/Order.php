@@ -516,7 +516,7 @@ class Order
     /**
      * @param RussianPostParams $russian_post_params
      */
-    public function setRussianPostParams(RussianPostParams $russian_post_params)
+    public function setRussianPostParams($russian_post_params)
     {
         $this->russian_post_params = $russian_post_params;
     }
