@@ -504,4 +504,20 @@ class Order
     {
         $this->sender_name = $sender_name;
     }
+
+    /**
+     * @return RussianPostParams
+     */
+    public function getRussianPostParams()
+    {
+        return $this->russian_post_params;
+    }
+
+    /**
+     * @param RussianPostParams $russian_post_params
+     */
+    public function setRussianPostParams($russian_post_params)
+    {
+        $this->russian_post_params = $russian_post_params;
+    }
 }
