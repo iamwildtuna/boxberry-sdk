@@ -53,6 +53,7 @@ $bbClient->setToken('main', 'bb_api_token');
   
 
 <a name="links"><h1>Changelog</h1></a>
+- 0.7.7 - Совместимость с Guzzle 7.2;   
 - 0.7.6 - Совместимость с Guzzle 7.1;  
 - 0.7.5 - Совместимость с Guzzle 7;   
 - 0.7.4 - Исправлено добавление параметров для заказов Почты России. Спасибо [Vasiliy](https://github.com/livevasiliy) за обнаружение и исправление;  
