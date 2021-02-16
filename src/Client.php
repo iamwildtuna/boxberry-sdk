@@ -26,7 +26,7 @@ class Client implements LoggerAwareInterface
      * @param int $timeout - таймаут ожидания ответа от серверов BoxBerry в секундах
      * @param string $api_uri - адрес API, так как теперь у BB их несколько
      */
-    public function __construct($timeout = 300, $api_uri = 'https://api.boxberry.de/json.php')
+    public function __construct($timeout = 300, $api_uri = 'https://api.boxberry.ru/json.php')
     {
         $this->httpClient = new \GuzzleHttp\Client([
             'base_uri' => $api_uri,
