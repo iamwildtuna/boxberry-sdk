@@ -53,6 +53,7 @@ $bbClient->setToken('main', 'bb_api_token');
   
 
 <a name="links"><h1>Changelog</h1></a>
+- 0.7.8 - Совместимость с Guzzle 7.3;  
 - 0.7.7 - Совместимость с Guzzle 7.2;   
 - 0.7.6 - Совместимость с Guzzle 7.1;  
 - 0.7.5 - Совместимость с Guzzle 7;   
