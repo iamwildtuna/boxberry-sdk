@@ -1,4 +1,4 @@
-<a href="https://lapay.group/"><img align="left" width="200" src="https://lapay.group/lglogo.jpg"></a>
+<a href="https://lapay.group/"><img align="left" width="200" src="https://lapay.group/img/lapaygroup.svg"></a>
 <a href="https://boxberry.ru/business_solutions/it_solutions/1089980/"><img align="right" width="200" src="https://lapay.group/bblogo.svg"></a>    
 
 <br /><br /><br />
