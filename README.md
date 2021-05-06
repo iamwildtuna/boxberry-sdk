@@ -10,12 +10,15 @@
 
 # SDK для [интеграции с программным комплексом Boxberry](https://api.boxberry.de/).  
 
-Посмотреть все проекты или подарить автору кофе можно [тут](https://lapay.group/opensource).    
+Посмотреть все проекты или подарить автору кофе можно [тут](https://lapay.group/opensource).     
+
+[База знаний BoxBerry](https://help.boxberry.ru/pages/viewpage.action?pageId=762955).    
 
 Обратите внимание, что теперь у BoxBerry несколько API адресов:  
  - https://api.boxberry.de/json.php - для старых клиентов;  
  - https://api.boxberry.ru/json.php - для новый клиентов;  
- - https://account.boxberry.ru/json.php - для новых клиентов.  
+ - https://account.boxberry.ru/json.php - для новых клиентов;  
+ - https://api.boxberry.org - резервный адрес.    
 
 По умолчанию API выбирает api.boxberry.de, для смены адреса необходимо при инициализации клиента вторым параметром передать нужный адрес.  
 
