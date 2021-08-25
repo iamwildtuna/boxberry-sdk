@@ -205,6 +205,9 @@ class Order
 
             $weights['weight' . $num] = $place->getWeight();
             $weights['barcode' . $num] = $place->getBarcode();
+            $weights['x' . $num] = $place->getX();
+            $weights['y' . $num] = $place->geY();
+            $weights['z' . $num] = $place->getZ();
         }
         $params['weights'] = $weights;
 
