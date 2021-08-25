@@ -18,19 +18,19 @@ class Place
     
     /**
     * Длина
-    * @var int
+    * @var float
     */
     private $x;
     
     /**
     * Ширина
-    * @var int
+    * @var float
     */
     private $y;
     
     /**
     * Высота
-    * @var int
+    * @var float
     */
     private $z;
 
