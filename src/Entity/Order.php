@@ -107,6 +107,12 @@ class Order
      * @var string
      */
     private $comment = '';
+    
+    /**
+     * Примечание к заказу
+     * @var string
+     */
+    private $notice = '';
 
     /**
      * Вид выдачи
@@ -228,6 +234,7 @@ class Order
 
         $params['items'] = $items;
         $params['issue'] = $this->issue;
+        $params['notice'] = $this->notice;
         $params['sender_name'] = $this->sender_name;
 
         return $params;
@@ -471,6 +478,22 @@ class Order
     public function setComment($comment)
     {
         $this->comment = $comment;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getNotice()
+    {
+        return $this->notice;
+    }
+
+    /**
+     * @param string $notice
+     */
+    public function setNotice($notice)
+    {
+        $this->notice = $notice;
     }
 
     /**
