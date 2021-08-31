@@ -322,7 +322,7 @@ class Client implements LoggerAwareInterface
     /**
      * Полная информация о заказе по ID заказа в магазине
      *
-     * @param $order_id
+     * @param $order_id - ID заказа магазина
      * @return array
      * @throws BoxBerryException
      */
