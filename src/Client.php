@@ -295,6 +295,8 @@ class Client implements LoggerAwareInterface
     }
 
     /**
+     * Этикетка по заказу
+     *
      * @param string $order_id - ID заказа магазина или трекномер BB
      * @return array
      * @throws BoxBerryException
@@ -302,6 +304,27 @@ class Client implements LoggerAwareInterface
     public function getOrderInfo($order_id)
     {
         return $this->callApi('GET', 'ParselCheck', ['ImId' => $order_id]);
+    }
+
+    /**
+     * Полная информация по заказу
+     *
+     * @param $track_id - трекномер BB
+     * @param null $order_id - ID заказа магазина
+     * @return array
+     * @throws BoxBerryException
+     *
+     */
+    public function getOrderFullInfo($track_id, $order_id = null)
+    {
+        $order_id = empty($track_id) ? $order_id : null;
+        $track_id = empty($order_id) ? $track_id : null;
+        if (!empty($track_id) && !empty($order_id)) {
+            $order_id = null;
+        }
+
+        $params = ['track' => $track_id, 'order_id' => $order_id];
+        return $this->callApi('POST', 'ParcelInfo', $params);
     }
 
     /**
