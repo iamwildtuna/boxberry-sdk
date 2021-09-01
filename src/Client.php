@@ -295,13 +295,13 @@ class Client implements LoggerAwareInterface
     }
 
     /**
-     * @param string $order_id - ID заказа магазина или трекномер BB
+     * @param string $track - трекномер BB
      * @return array
      * @throws BoxBerryException
      */
-    public function getOrderInfo($order_id)
+    public function getOrderInfo($track)
     {
-        return $this->callApi('GET', 'ParselCheck', ['ImId' => $order_id]);
+        return $this->callApi('GET', 'ParselCheck', ['ImId' => $track]);
     }
 
     /**
