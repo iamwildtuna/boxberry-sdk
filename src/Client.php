@@ -301,7 +301,7 @@ class Client implements LoggerAwareInterface
      * @return array
      * @throws BoxBerryException
      */
-    public function getOrderInfo($track)
+    public function getLabel($track)
     {
         return $this->callApi('GET', 'ParselCheck', ['ImId' => $track]);
     }
@@ -314,7 +314,7 @@ class Client implements LoggerAwareInterface
      * @throws BoxBerryException
      *
      */
-    public function getOrderFullInfoByTrack($track_id)
+    public function getOrderInfoByTrack($track_id)
     {
         return $this->callApi('POST', 'ParcelInfo', ['track' => $track_id]);
     }
@@ -326,7 +326,7 @@ class Client implements LoggerAwareInterface
      * @return array
      * @throws BoxBerryException
      */
-    public function getOrderFullInfoByOrderId($order_id)
+    public function getOrderInfoByOrderId($order_id)
     {
         return $this->callApi('POST', 'ParcelInfo', ['order_id' => $order_id]);
     }
