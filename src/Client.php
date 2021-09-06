@@ -373,16 +373,35 @@ class Client implements LoggerAwareInterface
 
 
     /**
-     * Позволяет удалить заказ, который не проводился в акте
+     * Позволяет удалить заказ по ID заказа магазина
      *
-     * @param string $order_id - ID заказа магазина или трекномер BB
-     * @return boolean
+     * @param string $order_id - ID заказа магазина
+     * @param int $cancelType - вариант отмены заказа (1 - удалить посылку, 2 - отозвать посылку)
+     * @return bool
      * @throws BoxBerryException
      */
-    public function deleteOrder($order_id)
+    public function deleteOrderByOrderId($order_id, $cancelType = 2)
     {
-        $response = $this->callApi('GET', 'ParselDel', ['ImId' => $order_id]);
-        if (!empty($response['text']) && $response['text'] == 'ok') {
+        $response = $this->callApi('GET', 'CancelOrder', ['orderid' => $order_id, 'cancelType' => $cancelType]);
+        if (!empty($response['err']) && $response['err'] === false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Позволяет удалить заказ по трекномеру BB
+     *
+     * @param $track - трекномер BB
+     * @param int $cancelType
+     * @return bool
+     * @throws BoxBerryException
+     */
+    public function deleteOrderByTrack($track, $cancelType = 2)
+    {
+        $response = $this->callApi('GET', 'CancelOrder', ['track' => $track, 'cancelType' => $cancelType]);
+        if (!empty($response['err']) && $response['err'] === false) {
             return true;
         }
 
