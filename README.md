@@ -42,10 +42,9 @@ $bbClient->setToken('main', 'bb_api_token');
 [Список ПВЗ](#getPvzList)  
 [Расчет тарифа](#calcTariff)  
 [Полная информация о ПВЗ](#pointDetails)  
-[Этикетка по заказу](#getOrderInfo)  
-[Полная информация о заказе по номеру заказа магазина](#getOrderFullInfoByOrderId)   
-[Полная информация о заказе по трекномеру](#getOrderFullInfoByTrack)  
-[Информация о заказе](#getOrderInfo)  
+[Этикетка по заказу](#getLabel)  
+[Информация о заказе по номеру заказа магазина](#getOrderInfoByOrderId)   
+[Информация о заказе по трекномеру](#getOrderInfoByTrack)
 [Список городов](#getCityList)  
 [Почтовые индексы с КД](#getZipList)  
 [Проверка почтового индекса](#checkZip)  
@@ -802,7 +801,7 @@ catch (\Exception $e) {
 }
 ```
 
-<a name="getOrderInfo"><h1>Информация о заказе</h1></a>  
+<a name="getLabel"><h1>Информация о заказе</h1></a>  
 Позволяет получить ссылку на файл печати этикеток по определенной посылке.
 
 **Входные параметры:**  
@@ -820,7 +819,7 @@ try {
     $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
     $bbClient->setCurrentToken('main');
     
-    $result = $bbClient->getOrderInfo('DUD15086277');
+    $result = $bbClient->getLabel('DUD15086277');
 }
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB
@@ -834,7 +833,7 @@ catch (\Exception $e) {
 }
 ```
 
-<a name="getOrderFullInfoByOrderId"><h1>Полная информация о заказе по номеру заказа магазина</h1></a>  
+<a name="getOrderInfoByOrderId"><h1>Информация о заказе по номеру заказа магазина</h1></a>  
 Позволяет получить информацию о заказе по номеру заказа в магазине.
 
 **Входные параметры:**
@@ -852,7 +851,7 @@ try {
     $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
     $bbClient->setCurrentToken('main');
     
-    $result = $bbClient->getOrderFullInfoByOrderId('6277');
+    $result = $bbClient->getOrderInfoByOrderId('6277');
 }
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB
@@ -866,7 +865,7 @@ catch (\Exception $e) {
 }
 ```
 
-<a name="getOrderFullInfoByOrderId"><h1>Полная информация о заказе по трекномеру</h1></a>  
+<a name="getOrderInfoByOrderId"><h1>Информация о заказе по трекномеру</h1></a>  
 Позволяет получить информацию о заказе по трекномеру.
 
 **Входные параметры:**
@@ -884,7 +883,7 @@ try {
     $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
     $bbClient->setCurrentToken('main');
     
-    $result = $bbClient->getOrderFullInfoByTrack('DUD15086277');
+    $result = $bbClient->getOrderInfoByTrack('DUD15086277');
 }
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB
