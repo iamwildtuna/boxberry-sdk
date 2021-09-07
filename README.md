@@ -59,6 +59,7 @@ $bbClient->setToken('main', 'bb_api_token');
   
 
 <a name="links"><h1>Changelog</h1></a>
+- 0.8.1 - Добавлены новые методы API. Подробнее [тут](https://github.com/iamwildtuna/boxberry-sdk/releases/tag/0.8.1). Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;   
 - 0.8.0 - Добавлена поддержка новый свойства в сущности Order и Place. Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;    
 - 0.7.8 - Совместимость с Guzzle 7.3;  
 - 0.7.7 - Совместимость с Guzzle 7.2;   
