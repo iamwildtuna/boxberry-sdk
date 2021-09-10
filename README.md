@@ -43,6 +43,7 @@ $bbClient->setToken('main', 'bb_api_token');
 [Расчет тарифа](#calcTariff)  
 [Полная информация о ПВЗ](#pointDetails)  
 [Этикетка по заказу](#getLabel)  
+[Получить файл этикетки](#getLabelFile)  
 [Информация о заказе по номеру заказа магазина](#getOrderInfoByOrderId)   
 [Информация о заказе по трекномеру](#getOrderInfoByTrack)
 [Список городов](#getCityList)  
@@ -803,7 +804,7 @@ catch (\Exception $e) {
 }
 ```
 
-<a name="getLabel"><h1>Информация о заказе</h1></a>  
+<a name="getLabel"><h1>Этикетка по заказу</h1></a>  
 Позволяет получить ссылку на файл печати этикеток по определенной посылке.
 
 **Входные параметры:**  
@@ -822,6 +823,38 @@ try {
     $bbClient->setCurrentToken('main');
     
     $result = $bbClient->getLabel('DUD15086277');
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getLabelFile"><h1>Получить файл этикетки</h1></a>  
+Позволяет сразу получить файл с этикеткой
+
+**Входные параметры:**
+- *track (string)* - трек-номер
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getLabelFile('DUD15086277');
 }
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB
