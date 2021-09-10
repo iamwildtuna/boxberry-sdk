@@ -92,7 +92,11 @@ class Client implements LoggerAwareInterface
         if ($type == 'POST') {
             $data = $params;
             $params = [];
-            $params['sdata'] = json_encode($data);
+            if ($method == 'ParcelInfo') {
+                $params = $data;
+            }else {
+                $params['sdata'] = json_encode($data);
+            }
             unset($data);
         }
 
@@ -316,7 +320,7 @@ class Client implements LoggerAwareInterface
      */
     public function getOrderInfoByTrack($track_id)
     {
-        return $this->callApi('POST', 'ParcelInfo', ['parcels' => ['track' => $track_id]]);
+        return $this->callApi('POST', 'ParcelInfo', ['parcels' => [['track' => $track_id]]]);
     }
 
     /**
@@ -328,7 +332,7 @@ class Client implements LoggerAwareInterface
      */
     public function getOrderInfoByOrderId($order_id)
     {
-        return $this->callApi('POST', 'ParcelInfo', ['parcels' => ['order_id' => $order_id]]);
+        return $this->callApi('POST', 'ParcelInfo', ['parcels' => [['order_id' => $order_id]]]);
     }
 
     /**
