@@ -311,6 +311,22 @@ class Client implements LoggerAwareInterface
     }
 
     /**
+     * Получить файл этикетки
+     *
+     * @param $track - трекномер BB
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws BoxBerryException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getLabelFile($track)
+    {
+        $response = $this->getLabel($track);
+        if ($response) {
+            return $this->httpClient->request('GET', $response['label']);
+        }
+    }
+
+    /**
      * Полная информация о заказе по трек номеру
      *
      * @param $track_id - трекномер BB
