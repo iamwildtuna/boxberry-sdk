@@ -44,6 +44,7 @@ $bbClient->setToken('main', 'bb_api_token');
 [Полная информация о ПВЗ](#pointDetails)  
 [Этикетка по заказу](#getLabel)  
 [Получить файл этикетки](#getLabelFile)  
+[Получить файл по ссылке](#getFileByLink)
 [Информация о заказе по номеру заказа магазина](#getOrderInfoByOrderId)   
 [Информация о заказе по трекномеру](#getOrderInfoByTrack)
 [Список городов](#getCityList)  
@@ -856,6 +857,39 @@ try {
     $bbClient->setCurrentToken('main');
     
     $result = $bbClient->getLabelFile('DUD15086277');
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getFileByLink"><h1>Получить файл по ссылке</h1></a>  
+Позволяет получить файл по ссылке. Боксберри отдает файлы этикетки, АПП, печатную форму акта, печатную форму акта ТМЦ в виде ссылок на скачивание.
+Прямых методов на получение файлов у Боксберри нет, поэтому данный метод позволит обработать все существующие ссылки на печатные версии документов.
+
+**Входные параметры:**
+- *link (string)* - ссылка на документ
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getLabelFile('http://api.boxberry.ru/parcel-files/act?upload_id=123');
 }
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB

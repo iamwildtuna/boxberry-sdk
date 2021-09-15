@@ -322,8 +322,20 @@ class Client implements LoggerAwareInterface
     {
         $response = $this->getLabel($track);
         if ($response) {
-            return $this->httpClient->request('GET', $response['label']);
+            return $this->getFileByLink($response['label']);
         }
+    }
+
+    /**
+     * Универсальный метод получения файлов по ссылке
+     *
+     * @param $link - ссылка на файл
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getFileByLink($link)
+    {
+        return $this->httpClient->request('GET', $link);
     }
 
     /**
