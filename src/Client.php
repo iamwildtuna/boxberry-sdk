@@ -518,4 +518,51 @@ class Client implements LoggerAwareInterface
 
         return $this->callApi('GET', 'ParselSendStory', $params);
     }
+
+    /**
+     * @param string $typeFile - тип файла, принимает значения 'act' - Акт приема передачи посылки, 'barcodes' - печатная форма этикеток
+     * @param array $params - параметры
+     * @return mixed
+     */
+    private function parcelFiles($typeFile = '', $params = [])
+    {
+        $uri = 'https://api.boxberry.ru/parcel-files/' . $typeFile;
+        $this->httpClient = new \GuzzleHttp\Client(['base_uri' => $uri, 'timeout' => 300]);
+        $params['token'] = $this->getCurrentToken();
+
+        return $this->httpClient->get('', ['query' => $params]);
+    }
+
+    /**
+     * Позволяет получить файл "Акта приема передачи посылки (АПП)" по номеру АПП
+     *
+     * @param $parcelId - номер акта приема передачи посылки
+     * @return mixed
+     */
+    public function getParcelFileActToId($parcelId)
+    {
+        return $this->parcelFiles('act', ['upload_id' => $parcelId]);
+    }
+
+    /**
+     * Позволяет получить файл акта ТМЦ (если подключена услуга в ЛК) по номеру АПП
+     *
+     * @param $parcelId - номер акта приема передачи посылки
+     * @return mixed
+     */
+    public function getParcelFileActTMCToId($parcelId)
+    {
+        return $this->parcelFiles('act', ['upload_id' => $parcelId, 'type_act' => 'tmc']);
+    }
+
+    /**
+     * Позволяет получить печатную форму этикеток по номеру АПП
+     *
+     * @param $parcelId - номер акта приема передачи посылки
+     * @return mixed
+     */
+    public function getParcelFileBarcodesToId($parcelId)
+    {
+        return $this->parcelFiles('barcodes', ['upload_id' => $parcelId]);
+    }
 }

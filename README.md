@@ -58,9 +58,13 @@ $bbClient->setToken('main', 'bb_api_token');
 [Список заказов не добавленных в акт](#getOrdersNotAct)  
 [Создание акта передачи посылок](#createOrdersTransferAct)  
 [Список созданных актов передачи посылок](#getActsList)  
+[Получить файл "Акта приема передачи посылки (АПП)" по номеру АПП](#getParcelFileActToId)  
+[Получить файл акта ТМЦ (если подключена услуга в ЛК) по номеру АПП](#getParcelFileActTMCToId)  
+[Получить печатную форму этикеток по номеру АПП](#getParcelFileBarcodesToId)  
   
 
 <a name="links"><h1>Changelog</h1></a>
+- 0.8.5 - Добавлены методы для прямого получения печатных форм: акта, акта ТМЦ, этикеток по АПП. Доработкой занимался [Maxim Rodionov](https://github.com/maxbrown1);
 - 0.8.4 - Добавлен метод получения этикетки. Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;    
 - 0.8.3 - Исправлен вызов методов поулчения информации о заказе. Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;   
 - 0.8.1 - Добавлены новые методы API. Подробнее [тут](https://github.com/iamwildtuna/boxberry-sdk/releases/tag/0.8.1). Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;   
@@ -1492,6 +1496,102 @@ try {
      
      )
      */
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getParcelFileActToId"><h1>Получить файл "Акта приема передачи посылки (АПП)" по номеру АПП</h1></a>  
+Позволяет получить файл "Акта приема передачи посылки (АПП)" по номеру АПП
+
+**Входные параметры:**
+- *$parcelId* - номер АПП
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getParcelFileActToId('12942207');
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getParcelFileActTMCToId"><h1>Получить файл акта ТМЦ (если подключена услуга в ЛК) по номеру АПП</h1></a>  
+Позволяет получить файл акта ТМЦ (если подключена услуга в ЛК) по номеру АПП
+
+**Входные параметры:**
+- *$parcelId* - номер АПП
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getParcelFileActTMCToId('12942207');
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getParcelFileBarcodesToId"><h1>Получить печатную форму этикеток по номеру АПП</h1></a>  
+Позволяет получить печатную форму этикеток по номеру АПП
+
+**Входные параметры:**
+- *$parcelId* - номер АПП
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $result = $bbClient->getParcelFileBarcodesToId('12942207');
 }
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB
