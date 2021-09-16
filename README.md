@@ -63,6 +63,7 @@ $bbClient->setToken('main', 'bb_api_token');
   
 
 <a name="links"><h1>Changelog</h1></a>
+- 0.8.5 - Добавлены методы для прямого получения печатных форм: акта, акта ТМЦ, этикеток по АПП. Доработкой занимался [Maxim Rodionov](https://github.com/maxbrown1);
 - 0.8.4 - Добавлен метод получения этикетки. Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;    
 - 0.8.3 - Исправлен вызов методов поулчения информации о заказе. Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;   
 - 0.8.1 - Добавлены новые методы API. Подробнее [тут](https://github.com/iamwildtuna/boxberry-sdk/releases/tag/0.8.1). Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;   
