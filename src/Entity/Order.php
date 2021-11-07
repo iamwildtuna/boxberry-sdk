@@ -226,7 +226,7 @@ class Order
          * @var Item $item
          */
         foreach ($this->items as $num => $item) {
-            $bbItem['id'] = $item->getId();
+            $bbItem['id'] = (string)$item->getId();
             $bbItem['name'] = $item->getName();
             $bbItem['UnitName'] = $item->getUnit();
             $bbItem['nds'] = $item->getVat();
