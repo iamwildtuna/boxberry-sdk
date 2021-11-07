@@ -45,6 +45,7 @@ $bbClient->setToken('main', 'bb_api_token');
 [Этикетка по заказу](#getLabel)  
 [Получить файл этикетки](#getLabelFile)  
 [Получить файл по ссылке](#getFileByLink)
+[Получить список заказов по трек номеру или номеру заказа магазина](#getAllOrdersInfo)   
 [Информация о заказе по номеру заказа магазина](#getOrderInfoByOrderId)   
 [Информация о заказе по трекномеру](#getOrderInfoByTrack)
 [Список городов](#getCityList)  
@@ -64,6 +65,7 @@ $bbClient->setToken('main', 'bb_api_token');
   
 
 <a name="links"><h1>Changelog</h1></a>
+- 0.8.6 - Добавлен метод для получения списка заказов по трек номерам или по номерам заказа магазина. Доработкой занимался [Maxim Rodionov](https://github.com/maxbrown1);
 - 0.8.5 - Добавлены методы для прямого получения печатных форм: акта, акта ТМЦ, этикеток по АПП. Доработкой занимался [Maxim Rodionov](https://github.com/maxbrown1);
 - 0.8.4 - Добавлен метод получения этикетки. Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;    
 - 0.8.3 - Исправлен вызов методов поулчения информации о заказе. Спасибо [Maxim Rodionov](https://github.com/maxbrown1) за доработку;   
@@ -926,6 +928,43 @@ try {
     $bbClient->setCurrentToken('main');
     
     $result = $bbClient->getOrderInfoByOrderId('6277');
+}
+catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
+    // Обработка ошибки вызова API BB
+    // $e->getMessage(); текст ошибки 
+    // $e->getCode(); http код ответа сервиса BB
+    // $e->getRawResponse(); // ответ сервера BB как есть (http request body)
+}
+
+catch (\Exception $e) {
+    // Обработка исключения
+}
+```
+
+<a name="getAllOrdersInfo"><h1>Получить список заказов по трек номеру или номеру заказа магазина</h1></a>  
+Позволяет получить список заказов по трек номерам или номерам заказов в магазине, одним запросом.
+
+**Входные параметры:**
+- *$order_ids (array)* - массив трек номеров или номеров заказов магазина
+- *$parcel_type (string)* - тип выборки (трек номер посылки или номер заказа магазина), принимает значения 'order_id' или 'track'. По умолчанию 'order_id'
+
+**Выходные параметры:**  
+Ассоциативный массив данных
+
+**Примеры вызова:**
+```php
+<?php
+
+try {
+    $bbClient = new \WildTuna\BoxberrySdk\Client();
+    $bbClient->setToken('main', 'bb_api_token'); // Заносим токен BB и присваиваем ему ключ main
+    $bbClient->setCurrentToken('main');
+    
+    $orderIds = [26974, 26975, 26980];
+    $trackIds = ['A123123121', 'B123123123', 'C123123123'];
+    
+    $result = $bbClient->getAllOrdersInfo($orderIds, 'order_id');
+    $result = $bbClient->getAllOrdersInfo($trackIds, 'track');
 }
 catch (\WildTuna\BoxberrySdk\Exception\BoxBerryException $e) {
     // Обработка ошибки вызова API BB

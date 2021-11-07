@@ -12,6 +12,9 @@ use Psr\Log\LoggerAwareTrait;
 
 class Client implements LoggerAwareInterface
 {
+    const PARCEL_TRACK = 'track';
+    const PARCEL_ORDER_ID = 'order_id';
+
     use LoggerAwareTrait;
 
     /** @var array */
@@ -327,6 +330,27 @@ class Client implements LoggerAwareInterface
     }
 
     /**
+     * @param $order_ids - список заказов
+     *
+     * @param string $parcel_type - тип выборки (трек номер посылки или номер заказа магазина)
+     * @return array|void
+     * @throws BoxBerryException
+     */
+    public function getAllOrdersInfo($order_ids, $parcel_type = self::PARCEL_ORDER_ID)
+    {
+        if (!in_array($parcel_type, $this->getParcelsType())) {
+            $parcel_type = self::PARCEL_ORDER_ID;
+        }
+        $parcels = array_map(function ($order) use ($parcel_type) {
+            return [$parcel_type => trim($order)];
+        }, $order_ids);
+        if (!$parcels) {
+            return;
+        }
+        return $this->callApi('POST', 'ParcelInfo', ['parcels' => $parcels]);
+    }
+
+    /**
      * Универсальный метод получения файлов по ссылке
      *
      * @param $link - ссылка на файл
@@ -564,5 +588,10 @@ class Client implements LoggerAwareInterface
     public function getParcelFileBarcodesToId($parcelId)
     {
         return $this->parcelFiles('barcodes', ['upload_id' => $parcelId]);
+    }
+
+    private function getParcelsType()
+    {
+        return [self::PARCEL_TRACK, self::PARCEL_ORDER_ID];
     }
 }
