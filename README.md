@@ -208,7 +208,7 @@ try {
     
     // Создаем товары
     $item = new \WildTuna\BoxberrySdk\Entity\Item();
-    $item->setId(1); // ID товара в БД ИМ'
+    $item->setId('123124BC'); // ID товара в БД ИМ'
     $item->setName('Тестовый товар 1'); // Название товара
     $item->setAmount(100); // Цена единицы товара
     $item->setQuantity(10); // Количество

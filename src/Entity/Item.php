@@ -6,7 +6,7 @@ class Item
 {
     /**
      * ID товара
-     * @var int
+     * @var string
      */
     private $id = 1;
 
@@ -41,7 +41,7 @@ class Item
     private $quantity = 0;
 
     /**
-     * @return int
+     * @return string
      */
     public function getId()
     {
@@ -49,7 +49,7 @@ class Item
     }
 
     /**
-     * @param int $id
+     * @param string $id
      */
     public function setId($id)
     {
