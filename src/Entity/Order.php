@@ -107,6 +107,12 @@ class Order
      * @var string
      */
     private $comment = '';
+    
+    /**
+     * Примечание к заказу
+     * @var string
+     */
+    private $notice = '';
 
     /**
      * Вид выдачи
@@ -199,6 +205,9 @@ class Order
 
             $weights['weight' . $num] = $place->getWeight();
             $weights['barcode' . $num] = $place->getBarcode();
+            $weights['x' . $num] = $place->getX();
+            $weights['y' . $num] = $place->getY();
+            $weights['z' . $num] = $place->getZ();
         }
         $params['weights'] = $weights;
 
@@ -217,7 +226,7 @@ class Order
          * @var Item $item
          */
         foreach ($this->items as $num => $item) {
-            $bbItem['id'] = $item->getId();
+            $bbItem['id'] = (string)$item->getId();
             $bbItem['name'] = $item->getName();
             $bbItem['UnitName'] = $item->getUnit();
             $bbItem['nds'] = $item->getVat();
@@ -228,6 +237,7 @@ class Order
 
         $params['items'] = $items;
         $params['issue'] = $this->issue;
+        $params['notice'] = $this->notice;
         $params['sender_name'] = $this->sender_name;
 
         return $params;
@@ -471,6 +481,22 @@ class Order
     public function setComment($comment)
     {
         $this->comment = $comment;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getNotice()
+    {
+        return $this->notice;
+    }
+
+    /**
+     * @param string $notice
+     */
+    public function setNotice($notice)
+    {
+        $this->notice = $notice;
     }
 
     /**

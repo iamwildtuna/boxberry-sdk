@@ -12,6 +12,9 @@ use Psr\Log\LoggerAwareTrait;
 
 class Client implements LoggerAwareInterface
 {
+    const PARCEL_TRACK = 'track';
+    const PARCEL_ORDER_ID = 'order_id';
+
     use LoggerAwareTrait;
 
     /** @var array */
@@ -92,7 +95,11 @@ class Client implements LoggerAwareInterface
         if ($type == 'POST') {
             $data = $params;
             $params = [];
-            $params['sdata'] = json_encode($data);
+            if ($method == 'ParcelInfo') {
+                $params = $data;
+            }else {
+                $params['sdata'] = json_encode($data);
+            }
             unset($data);
         }
 
@@ -295,13 +302,89 @@ class Client implements LoggerAwareInterface
     }
 
     /**
-     * @param string $order_id - ID заказа магазина или трекномер BB
+     * Этикетка по заказу
+     *
+     * @param string $track - трекномер BB
      * @return array
      * @throws BoxBerryException
      */
-    public function getOrderInfo($order_id)
+    public function getLabel($track)
     {
-        return $this->callApi('GET', 'ParselCheck', ['ImId' => $order_id]);
+        return $this->callApi('GET', 'ParselCheck', ['ImId' => $track]);
+    }
+
+    /**
+     * Получить файл этикетки
+     *
+     * @param $track - трекномер BB
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws BoxBerryException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getLabelFile($track)
+    {
+        $response = $this->getLabel($track);
+        if ($response) {
+            return $this->getFileByLink($response['label']);
+        }
+    }
+
+    /**
+     * @param $order_ids - список заказов
+     *
+     * @param string $parcel_type - тип выборки (трек номер посылки или номер заказа магазина)
+     * @return array|void
+     * @throws BoxBerryException
+     */
+    public function getAllOrdersInfo($order_ids, $parcel_type = self::PARCEL_ORDER_ID)
+    {
+        if (!in_array($parcel_type, $this->getParcelsType())) {
+            $parcel_type = self::PARCEL_ORDER_ID;
+        }
+        $parcels = array_map(function ($order) use ($parcel_type) {
+            return [$parcel_type => trim($order)];
+        }, $order_ids);
+        if (!$parcels) {
+            return;
+        }
+        return $this->callApi('POST', 'ParcelInfo', ['parcels' => $parcels]);
+    }
+
+    /**
+     * Универсальный метод получения файлов по ссылке
+     *
+     * @param $link - ссылка на файл
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getFileByLink($link)
+    {
+        return $this->httpClient->request('GET', $link);
+    }
+
+    /**
+     * Полная информация о заказе по трек номеру
+     *
+     * @param $track_id - трекномер BB
+     * @return array
+     * @throws BoxBerryException
+     *
+     */
+    public function getOrderInfoByTrack($track_id)
+    {
+        return $this->callApi('POST', 'ParcelInfo', ['parcels' => [['track' => $track_id]]]);
+    }
+
+    /**
+     * Полная информация о заказе по ID заказа в магазине
+     *
+     * @param $order_id - ID заказа магазина
+     * @return array
+     * @throws BoxBerryException
+     */
+    public function getOrderInfoByOrderId($order_id)
+    {
+        return $this->callApi('POST', 'ParcelInfo', ['parcels' => [['order_id' => $order_id]]]);
     }
 
     /**
@@ -373,16 +456,35 @@ class Client implements LoggerAwareInterface
 
 
     /**
-     * Позволяет удалить заказ, который не проводился в акте
+     * Позволяет удалить заказ по ID заказа магазина
      *
-     * @param string $order_id - ID заказа магазина или трекномер BB
-     * @return boolean
+     * @param string $order_id - ID заказа магазина
+     * @param int $cancelType - вариант отмены заказа (1 - удалить посылку, 2 - отозвать посылку)
+     * @return bool
      * @throws BoxBerryException
      */
-    public function deleteOrder($order_id)
+    public function deleteOrderByOrderId($order_id, $cancelType = 2)
     {
-        $response = $this->callApi('GET', 'ParselDel', ['ImId' => $order_id]);
-        if (!empty($response['text']) && $response['text'] == 'ok') {
+        $response = $this->callApi('GET', 'CancelOrder', ['orderid' => $order_id, 'cancelType' => $cancelType]);
+        if (!empty($response['err']) && $response['err'] === false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Позволяет удалить заказ по трекномеру BB
+     *
+     * @param $track - трекномер BB
+     * @param int $cancelType
+     * @return bool
+     * @throws BoxBerryException
+     */
+    public function deleteOrderByTrack($track, $cancelType = 2)
+    {
+        $response = $this->callApi('GET', 'CancelOrder', ['track' => $track, 'cancelType' => $cancelType]);
+        if (!empty($response['err']) && $response['err'] === false) {
             return true;
         }
 
@@ -439,5 +541,57 @@ class Client implements LoggerAwareInterface
             $params['to'] = date('Ymd', strtotime($to));
 
         return $this->callApi('GET', 'ParselSendStory', $params);
+    }
+
+    /**
+     * @param string $typeFile - тип файла, принимает значения 'act' - Акт приема передачи посылки, 'barcodes' - печатная форма этикеток
+     * @param array $params - параметры
+     * @return mixed
+     */
+    private function parcelFiles($typeFile = '', $params = [])
+    {
+        $uri = 'https://api.boxberry.ru/parcel-files/' . $typeFile;
+        $this->httpClient = new \GuzzleHttp\Client(['base_uri' => $uri, 'timeout' => 300]);
+        $params['token'] = $this->getCurrentToken();
+
+        return $this->httpClient->get('', ['query' => $params]);
+    }
+
+    /**
+     * Позволяет получить файл "Акта приема передачи посылки (АПП)" по номеру АПП
+     *
+     * @param $parcelId - номер акта приема передачи посылки
+     * @return mixed
+     */
+    public function getParcelFileActToId($parcelId)
+    {
+        return $this->parcelFiles('act', ['upload_id' => $parcelId]);
+    }
+
+    /**
+     * Позволяет получить файл акта ТМЦ (если подключена услуга в ЛК) по номеру АПП
+     *
+     * @param $parcelId - номер акта приема передачи посылки
+     * @return mixed
+     */
+    public function getParcelFileActTMCToId($parcelId)
+    {
+        return $this->parcelFiles('act', ['upload_id' => $parcelId, 'type_act' => 'tmc']);
+    }
+
+    /**
+     * Позволяет получить печатную форму этикеток по номеру АПП
+     *
+     * @param $parcelId - номер акта приема передачи посылки
+     * @return mixed
+     */
+    public function getParcelFileBarcodesToId($parcelId)
+    {
+        return $this->parcelFiles('barcodes', ['upload_id' => $parcelId]);
+    }
+
+    private function getParcelsType()
+    {
+        return [self::PARCEL_TRACK, self::PARCEL_ORDER_ID];
     }
 }
