@@ -10,7 +10,7 @@
 
 # SDK для [интеграции с программным комплексом Boxberry](https://api.boxberry.de/).  
 
-Посмотреть все проекты или подарить автору кофе можно [тут](https://lapay.group/opensource).     
+Посмотреть все проекты или подарить автору кофе можно [тут](https://lapaygroup.ru/opensource).     
 
 [База знаний BoxBerry](https://help.boxberry.ru/pages/viewpage.action?pageId=762955).    
 
