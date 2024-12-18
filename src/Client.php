@@ -155,10 +155,11 @@ class Client implements LoggerAwareInterface
      * @param boolean $prepaid true - все ПВЗ, false - с возможностью оплаты при получении
      * @param boolean $short - true - краткая информация о ПВЗ с датой последнего изменения
      * @param int $city_code - код города BB, если нужны ПВЗ в заданном городе
+     * @param int $country_code - код страны BB
      * @return array
      * @throws BoxBerryException
      */
-    public function getPvzList($prepaid = false, $short = false, $city_code = null)
+    public function getPvzList($prepaid = false, $short = false, $city_code = null, $country_code = null)
     {
         $method = 'ListPoints';
         $params = [];
@@ -171,6 +172,9 @@ class Client implements LoggerAwareInterface
 
         if ($city_code)
             $params['CityCode'] = $city_code;
+
+        if ($country_code)
+            $params['CountryCode'] = $country_code;
 
         return $this->callApi('GET', $method, $params);
     }
